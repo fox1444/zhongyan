@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>我的小组</title>
+    <link rel="stylesheet" href="/View_Mobile/css/sm.min.css">
+    <link rel="stylesheet" href="/WX/CSS/wxstyle.css">
+    <style>
+        .right-panel {
+            bottom: 3rem;
+        }
+        .item-inner {
+            padding: 0.1rem 0.75rem 0.1rem 0!important;
+        }
+    </style>
+</head>
+<body ms-controller="Mygroup">
+
+    <div class="page page-current " id="pageindex1">
+        <div class="content native-scroll">
+            <div class="list-block contacts-block" style="margin:0px;">
+                <div class="list-group">
+                    <ul>
+                        <li class="list-group-title">
+                            我的小组
+                            <div class="add-new">
+                                <a class="mod-li-icon" ms-click="addGROUP()">+</a>
+                            </div>
+                        </li>
+                        <li ms-repeat-el="ctData">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title" ms-click="vieww(el)">{{el.GroupName}}
+                                        <div class="light">
+                                            {{el.UserRealName}}创建
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-nav">
+            <ul>
+                <li>
+                    <span ms-on-click="gopage(1)" class="nav-group active">
+                        小组
+                    </span>
+                </li>
+                <li>
+                    <span ms-on-click="gopage(2)" class="nav-search">
+                        搜索
+                    </span>
+                </li>
+                <li>
+                    <span ms-on-click="gopage(3)" class="nav-me">
+                        我
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/avalon.min.js"></script>
+
+    <script>
+        var model = avalon.define({
+            $id: "Mygroup",
+            ctData: [],
+            groupData: {},
+            inittemp: function () {
+                //var pn = ComFunJS.getCookie("szhlcode");
+                //alert(pn);
+                $.getJSON("/API/VIEWAPI.ashx?Action=WXGL_GETGROUPLIST&r=" + Math.random(), {}, function (r) {
+                    if (r.ErrorMsg == "") {
+                        model.groupData = r.Result;
+                        model.ctData.pushArray(r.Result);
+
+                    }
+                })
+            },
+            vieww: function (el) {
+                window.location = "/View_Mobile/UI/BASE/APP_MOBIL_WF.html?FormCode=WXGROUP&GroupCode=" + el.GroupCode + "&r=" + Math.random();
+            },
+            addGROUP: function (el) {
+                window.location = "/View_Mobile/UI/BASE/APP_MOBIL_WF.html?FormCode=WXGROUP&r=" + Math.random();
+            },
+            gopage: function (k) {
+                if (k == 1)
+                    window.location = "zlxz/mygroup.html";
+                else if (k == 2)
+                    window.location = "zlxz/search.html";
+                else if (k == 3)
+                    window.location = "zlxz/me.html";
+            }
+        })
+
+        avalon.ready(function () {
+            model.inittemp();
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+﻿<div class="form-horizontal" ms-controller="ZCGL">
+    <div style="margin: 0 80px;">
+        <div>
+            <!--<div class="fg-item"><span>基本信息</span></div>-->
+            <ul class="clearfix" style="display: block;padding:0">
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label">编码</label>
+                    <div class="add-ic">
+                        <input type="text" class="form-control" ms-duplex="modelData.Code" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <!--<div class="fg-item"><span>基本信息</span></div>-->
+            <ul class="clearfix" style="display: block;padding:0">
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label"><i>*</i>名称</label>
+                    <div class="add-ic">
+                        <input type="text" autofocus="autofocus" class="form-control szhl_require" ms-duplex="modelData.Name" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label"><i>*</i>开始使用日期</label>
+                    <div class="add-ic">
+                        <input type="text" class="form-control szhl_form_date_time szhl_require" ms-duplex="modelData.RegistDate">
+                    </div>
+                </li>
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label"><i>*</i>资产类型</label>
+                    <div class="add-ic">
+                        <select name="conType" id="conType" ms-duplex="modelData.TypeID" class="form-control szhl_require">
+                            <option ms-repeat-item="TypeData" ms-attr-value="item.ID">{{item.Title}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label"><i>*</i>使用状态</label>
+                    <div class="add-ic">
+                        <select class="form-control" ms-duplex="modelData.Status">
+                            <option ms-repeat-item="ComFunJS.ZCStatusData" ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.Status?'selected':''">{{item.TypeName}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label"><i>*</i>数量</label>
+                    <div class="add-ic">
+                        <input type="text" onkeyup="if (isNaN(value)) execCommand('undo')" onafterpaste="if (isNaN(value)) execCommand('undo')" class="form-control" ms-duplex="modelData.Qty" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label"><i>*</i>公司</label>
+                    <div class="add-ic">
+                        <select name="conBranch" id="conBranch" ms-duplex="modelData.BranchCode" class="form-control szhl_require" ms-change="LoadGW(this.value,true);">
+                            <option ms-repeat-item="BranchData" ms-attr-value="item.DeptCode">{{item.DeptName}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label">部门</label>
+                    <div class="add-ic">
+                        <select name="conusergw" id="conusergw" ms-duplex="modelData.UserGW" class="form-control" ms-change="LoadUser(modelData.BranchCode,this.value,true)">
+                            <option value=""></option>
+                            <option ms-repeat-item="GWData" ms-attr-value="item.UserGW">{{item.UserGW}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label">使用人</label>
+                    <div class="add-ic">
+                        <select name="conUserName" id="conUserName" ms-duplex="modelData.UserName" class="form-control">
+                            <option value=""></option>
+                            <option ms-repeat-item="UserData" ms-attr-value="item.UserName">{{item.UserRealName}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label">存放地址</label>
+                    <div class="add-ic">
+                        <!--<input type="text" class="form-control" ms-duplex="modelData.Location" />-->
+                        <select name="conLocationID" id="conLocationID" ms-duplex="modelData.LocationID" class="form-control">
+                            <option value="0"></option>
+                            <option ms-repeat-item="LocationData" ms-attr-value="item.ID">{{item.Title}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label">标签</label>
+                    <div class="add-ic">
+                        <input type="text" class="form-control" ms-duplex="modelData.Tag" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label">EPC编号</label>
+                    <div class="add-ic">
+                        <input type="text" class="form-control" ms-duplex="modelData.EPCode" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label">出厂编号</label>
+                    <div class="add-ic">
+                        <input type="text" class="form-control" ms-duplex="modelData.FactoryCode" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label">原值(元)</label>
+                    <div class="add-ic">
+                        <input type="text" onkeyup="if (isNaN(value)) execCommand('undo')" onafterpaste="if (isNaN(value)) execCommand('undo')" class="form-control" ms-duplex="modelData.OrginalPrice" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label">现值(元)</label>
+                    <div class="add-ic">
+                        <input type="text" onkeyup="if (isNaN(value)) execCommand('undo')" onafterpaste="if (isNaN(value)) execCommand('undo')" class="form-control" ms-duplex="modelData.PresentPrice" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-left">
+                    <label class="add-item-label">折旧年限</label>
+                    <div class="add-ic">
+                        <input type="text" onkeyup="if (isNaN(value)) execCommand('undo')" onafterpaste="if (isNaN(value)) execCommand('undo')" class="form-control" ms-duplex="modelData.Depreciation" />
+                    </div>
+                </li>
+                <li class="add-item add-width fl-right">
+                    <label class="add-item-label">管理部门</label>
+                    <div class="add-ic">
+                        <select name="conmzw" id="conmzw" ms-duplex="modelData.Managezhiwu" class="form-control">
+                            <option value=""></option>
+                            <option ms-repeat-item="ManageGWData" ms-attr-value="item.UserGW">{{item.UserGW}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-widthall">
+                    <label class="add-item-label">备注</label>
+                    <div class="add-ic">
+                        <textarea class="szhl_UEEDIT" id="hycontent" umheight="250" ms-duplex="modelData.Comment"></textarea>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    var tempmodel = avalon.define({
+        $id: "ZCGL",
+        name: "资产管理",
+        TypeId: ComFunJS.getQueryString("typeId"),
+        TypeData: [],  //类型
+        BranchData: [],  //公司
+        GWData: [],  //部门
+        ManageGWData: [], //管理部门
+        UserData: [],  //使用人
+        LocationData: [],//场地
+        inittemp: function (strId) {
+            tempmodel.LoadType();
+            tempmodel.LoadLocation();
+            if (strId) {
+                //编辑加载数据
+                $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLMODEL', { P1: strId }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        tempmodel.modelData = resultData.Result[0];
+                        tempmodel.LoadBranch(tempmodel.modelData.BranchCode);
+                        tempmodel.LoadUser(tempmodel.modelData.BranchCode, tempmodel.modelData.UserGW, false);
+                        setTimeout(" ComFunJS.initForm()", 500);
+                    }
+                })
+            } else {
+                tempmodel.LoadBranch();
+                pmodel.isDraft = true;
+                ComFunJS.initForm();
+            }
+            
+        },//初始化
+        LoadBranch: function (bcode) {
+            //部门列表
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETTHISUSERBRANCHLIST&r=' + Math.random(), {}, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.BranchData = resultData.Result;
+                    if (resultData.Result.length > 0) {
+                        if (bcode) {
+                            tempmodel.modelData.BranchCode = bcode;
+                        }
+                        if (!tempmodel.modelData.BranchCode) {
+                            tempmodel.modelData.BranchCode = resultData.Result[0].DeptCode;
+                        };
+
+                        tempmodel.LoadGW(tempmodel.modelData.BranchCode, false);
+                       
+                    }
+                }
+            })
+        },
+        LoadGW: function (bcode, clear) {
+            //岗位
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETALLGWBYBRANCHCODE&r=' + Math.random(), { P1: bcode }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.GWData = resultData.Result;
+                    tempmodel.ManageGWData = resultData.Result;  
+                    tempmodel.modelData.BranchCode = bcode;
+                    
+                    if (clear) {
+                        tempmodel.modelData.UserGW = '';
+                        tempmodel.UserData = '';
+                        $('#conusergw').val('');//不能删，不然岗位列表抽风
+
+                        tempmodel.modelData.Managezhiwu = '';
+                        $('#conmzw').val('');//不能删，不然岗位列表抽风
+                    }
+                }
+            })
+        },
+        LoadUser: function (bcode, usergw, clear) {
+            //人员列表
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETUSERLISTBYBRANCHANDGW&r=' + Math.random(), { P1: bcode, P2: usergw }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.UserData = resultData.Result;
+                    tempmodel.modelData.BranchCode = bcode;
+                    tempmodel.modelData.UserGW = usergw;
+                    if (clear) {
+                        tempmodel.modelData.UserName = '';//需把之前选择的人员清空
+                        $('#conUserName').val('');
+                    }
+                }
+            })
+        },
+        LoadType: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLTYPELIST', {}, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.TypeData = resultData.Result;
+                    if (resultData.Result.length > 0) {
+                        if (tempmodel.TypeId) {
+                            tempmodel.modelData.TypeID = tempmodel.TypeId;
+                        }
+                        if (!tempmodel.modelData.TypeID) {
+                            tempmodel.modelData.TypeID = resultData.Result[0].ID;
+                        };
+                    }
+                }
+            })
+        },
+        LoadLocation: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLLOCATIONLIST', {}, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.LocationData = resultData.Result;
+                }
+            })
+        },
+        modelData: { "ComId": "0", "ID": "0", "Name": "", "Code": "", "EPCode": "", "FactoryCode": "", "Tag": "", "BranchCode": "", "UserGW": "", "UserName": "", "LocationID": "0", "Location": "", "Status": "0", "TypeID": "", "Comment": "", "OrginalPrice": "0", "PresentPrice": "0", "Qty": "1", "RegistDate": "", "Depreciation": "0", "CRUser": ComFunJS.getnowuser(), "CRDate": ComFunJS.getnowdate('yyyy-mm-dd hh:mm'), "IsDel": "0", "Managezhiwu": "", "Desc": "","Situation": "","Verify": "","IndexID": 0},
+        SaveData: function (callback) {
+            $.post("/API/VIEWAPI.ashx?ACTION=ZCGL_ADDZCGL&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
+                return callback.call(this, result);
+            });
+        }
+    });
+</script>

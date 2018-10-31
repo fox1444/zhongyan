@@ -1,0 +1,173 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>生命周期</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/animate.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
+</head>
+
+<body style="background-color: #F8F8F8; height: 100%;" ms-controller="LifeCycle">
+    <div class="padding20" style="padding-bottom:0;">
+        <div class="card card3 mb20">
+            <div class="detail-nav">
+                <div class="tab-kh nav-bt">
+                    <span class="cur"><i class="iconfont icon-bookmark"></i>资产信息</span>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="table-con">
+                    <tr>
+                        <th ms-repeat-el="ShowColumns">
+                            <div class="">{{el.ColText}}</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td ms-repeat-el="ShowColumns">
+                            <div class="">{{ComFunJS.FnFormat(modelData[el.ColName],el.format)|html}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="padding20" style="padding-top:0; padding-bottom:0;">
+        <div class="card card3 mb20">
+            <div class="detail-nav">
+                <div class="tab-kh nav-bt">
+                    <span class="cur"><i class="iconfont icon-bookmark"></i>生命周期信息</span>
+                    <div class="pr20" style="float: right;">
+                        <button class="btn btn-info"  ms-click="EditLifeCycle(0,'添加')">添加</button>
+                    </div>
+                </div>
+            </div>
+            <div style="padding-right:10px; margin-bottom:10px;">
+                <div class="crm-dt" ms-repeat-item="LCData">
+                    <span class="crm-yuan"></span>
+                    <div class="crm-dt-cont">
+                        <i class="bg"></i>
+                        <span class="wt"></span>
+                        <div style="margin:10px;">
+                            <p class="c666">
+                                <b>【{{ComFunJS.FnFormat(item.TypeID,"lfcytype")|html}}】</b>> <span>{{item.Title}}</span>
+                                <!--<span class="pull-right">{{item.FromDate|date("yy年M月d日 H:mm")}} - {{item.ToDate|date("yy年M月d日 H:mm")}}</span>
+                                <div style="padding-left:10px;">{{item.FromUser}}{{item.ToUser}}</div>-->
+                                <span class="pull-right">{{ComFunJS.CheckType(item)}}</span>
+                            </p>
+                            <h3 class="crm-xg ft14 mt5 c999" style="padding-left:10px;">{{ComFunJS.bqhContent(item.Comment)|html}}</h3>
+                            <div style="text-align:right;">
+                                <a class="lk" ms-click="EditLifeCycle(item.ID,'编辑')">编辑</a>&nbsp;&nbsp;&nbsp;
+                                <a class="lk" ms-click="DelLifeCycle(item,$event)">删除</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/layer/layer.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/YSteps/Steps.js"></script>
+    <script type="text/javascript">
+        var model = avalon.define({
+            $id: "LifeCycle",
+            modelData: {},
+            ShowColumns: [],
+            LCData: [],//生命周期信息
+            strId: ComFunJS.getQueryString("ID"),//资产ID
+            nowuser: ComFunJS.getnowuser(),
+            GetModelData: function () {
+                if (model.strId) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLMODEL', { P1: model.strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.modelData = resultData.Result[0];
+                            }
+                        }
+                    })
+                }
+            },
+            GetLfCyList: function () {
+                if (model.strId) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETLIFECYCLLISTBYZCGLID', { P1: model.strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.LCData = resultData.Result;
+                            }
+                        }
+                    })
+                }
+            },
+            EditLifeCycle: function (lcID, title) {
+                ComFunJS.winbtnwin("/ViewV5/AppPage/ZCGL/EDIT_LIFECYCLE.html?LCID=" + lcID + "&r=" + Math.random(), title + "生命周期", 600, 500, {}, function (layero, inx) {
+                    var frameid = $("iframe", $(layero)).attr('id');
+                    var lcnr = ComFunJS.isIE() ? window.frames[frameid].getLC() : window.frames[frameid].contentWindow.getLC();
+                  
+                    if (lcnr) {
+                        $.post('/API/VIEWAPI.ashx?Action=ZCGL_UPDATELIFECYCLE&r=' + Math.random(), { P1: model.strId , P2: lcnr}, function (resultData) {
+                            if (resultData.ErrorMsg == "") {
+                                layer.close(inx);
+                                model.GetLfCyList();
+                                top.ComFunJS.winsuccess("操作成功！！");
+                            }
+                            else {
+                                top.ComFunJS.winwarning(resultData.ErrorMsg);
+                            }
+                        })
+                    }
+                })
+            },
+            DelLifeCycle: function (el, event) {
+                if (event) {
+                    event.stopPropagation();
+                }
+                ComFunJS.winconfirm("确认要删除吗？", function () {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=ZCGL_DELLIFECYCLE", { P1: el.ID }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            model.LCData.remove(el);
+                            ComFunJS.winsuccess("操作成功");
+                        }
+                    })
+                }, function () { })
+
+            },
+        
+        });
+
+        avalon.ready(function () {
+            model.ShowColumns.pushArray(
+                [
+                    { "ColName": "Name", "ColText": "资产名称", "IsSel": true, "class": "width50" },
+                    { "ColName": "UserGW", "ColText": "部门", "IsSel": true, "class": "width50" },
+                    { "ColName": "UserRealName", "ColText": "使用人", "IsSel": true, "class": "width50" },
+                    { "ColName": "Code", "ColText": "资产编码", "IsSel": true },
+                    { "ColName": "RegistDate", "ColText": "开始使用日期", "IsSel": true, "class": "width50", "format": "dateformat" },
+                    { "ColName": "Title", "ColText": "资产类型", "width": "10%", IsSel: true, "class": "width50" },
+                    { "ColName": "Status", "ColText": "使用状态", "IsSel": true, "class": "width50", "format": "zcstatus" },
+                    { "ColName": "Qty", "ColText": "数量", "IsSel": true, "class": "width50" },
+                    { "ColName": "LocTitle", "ColText": "存放地点", "IsSel": true, "class": "width50" },
+                    //{ "ColName": "OrginalPrice", "ColText": "原值(元)", "IsSel": true, "class": "width50" },
+                    //{ "ColName": "PresentPrice", "ColText": "现值(元)", "IsSel": true, "class": "width50" },
+                ]);
+            model.GetModelData();
+            model.GetLfCyList();
+        })
+
+        function GetZCGLID()
+        {
+            return model.strId;
+        }
+    </script>
+</body>
+</html>

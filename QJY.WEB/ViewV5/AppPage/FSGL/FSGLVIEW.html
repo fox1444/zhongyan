@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>粉丝详情</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="//at.alicdn.com/t/font_1473753044_842232.css">-->
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/animate.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
+    <style>
+    </style>
+</head>
+
+<body style="background-color: #F8F8F8; height: 100%;" ms-controller="FSGLVIEW">
+    <div class="padding20">
+        <div class="card card3 mb20">
+            <div class="detail-nav">
+                <div class="tab-kh nav-bt">
+                    <span class="cur"><i class="iconfont icon-bookmark"></i>粉丝信息</span>
+                </div>
+            </div>
+            <div class="detail-con">
+                <div class="detail-item" ms-repeat-el="ShowColumns" ms-class-1="{{el.class}}">
+                    <span class="item-tit">{{el.ColText}}</span>
+                    <div class="item-con ">{{ComFunJS.FnFormat(modelData[el.ColName],el.format)|html}}</div>
+                </div>              
+            </div>
+        </div>
+    </div>
+
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/layer/layer.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/YSteps/Steps.js"></script>
+    <script type="text/javascript">
+
+        var model = avalon.define({
+            $id: "FSGLVIEW",
+            modelData: {},
+            ShowColumns: [],
+            strId: ComFunJS.getQueryString("ID"),
+            nowuser: ComFunJS.getnowuser(),
+            GetModelData: function () {
+                if (model.strId) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPI.ashx?Action=FSGL_GETFSGLMODEL', { P1: model.strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.modelData = resultData.Result[0];
+                            }
+                        }
+                    })
+                }
+            },
+        });
+
+        avalon.ready(function () {
+            model.ShowColumns.pushArray(
+                [
+                    { "ColName": "HeadImgUrl", "ColText": "头像", "IsSel": true, "class": "width50", "format": "headimg" },
+                    { "ColName": "Nickname", "ColText": "昵称", "IsSel": true, "class": "width50" },                  
+                    { "ColName": "Openid", "ColText": "Openid", "IsSel": true, "class": "width50" },
+                    { "ColName": "Sex", "ColText": "性别", "IsSel": true, "class": "width50" },
+                    { "ColName": "Country", "ColText": "国家", "IsSel": true, "class": "width50" },
+                    { "ColName": "Province", "ColText": "省份", "IsSel": true, "class": "width50" },
+                    { "ColName": "City", "ColText": "城市", "IsSel": true, "class": "width50" },
+                    { "ColName": "CRDate", "ColText": "关注时间", "IsSel": true, "class": "width50", "format": "dateformat"},
+                    { "ColName": "LastLoginDate", "ColText": "最后登录时间", "IsSel": true, "class": "width50", "format": "dateformat" },
+                    { "ColName": "IsWX", "ColText": "是否已绑定", "IsSel": true, "class": "width50","format" : "isornot" },
+                    { "ColName": "UserRealName", "ColText": "真实姓名", "IsSel": true, "class": "width50" },
+                    { "ColName": "mobphone", "ColText": "手机号", "IsSel": true, "class": "width50" },
+                    { "ColName": "IDCard", "ColText": "身份证", "IsSel": true, "class": "width50" },
+                    { "ColName": "ToMonoLicense", "ColText": "烟草专卖证", "IsSel": true, "class": "width50" },
+                ]);
+            model.GetModelData();
+        })
+    </script>
+</body>
+</html>

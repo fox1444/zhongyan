@@ -1,0 +1,198 @@
+﻿<div ms-controller="ZCGLLIST">
+    <!-- 按条件选择 -->
+    <div class="tab-filter-type">
+        <div class="oh" style="margin-bottom:15px;">
+            <h5 class="pull-left tr">所属部门：</h5>
+            <select name="conBranch" id="conBranch" ms-change="SelectBranch(this.value)" class="narrow-select">
+                <option ms-repeat-item="BranchData" ms-attr-value="item.DeptCode">{{item.DeptName}}</option>
+            </select>
+            <select name="conGWs" id="conGWs" ms-change="SelectUSERGW(this.value)" class="narrow-select">
+                <option value="">所有部门</option>
+                <option ms-repeat-item="GWData" ms-attr-value="item.UserGW">{{item.UserGW}}({{item.ZCNum}})</option>
+            </select>
+
+            <canvas id="cvs" style="display:none;">
+                当前浏览器不支持canvas
+                <!-- 如果浏览器支持canvas，则canvas标签里的内容不会显示出来 -->
+            </canvas>
+        </div>
+        <div class="oh">
+            <h5 class="pull-left tr">资产类型：</h5>
+            <ul class="tab-type ft14">
+                <li ms-click="SelectTYPE('')"><span class="active">全部</span></li>
+                <li ms-repeat-el="TypeData" ms-click="SelectTYPE(el.ID)"><span>{{el.Title}}({{el.ZCNum}})</span></li>
+            </ul>
+        </div>
+        <!-- 搜索 -->
+        <div class="oh">
+            <div class="input-group ml15" style="width:295px;">
+                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索资产名称或者编号">
+                <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
+            </div>
+        </div>
+    </div>
+    <!-- 展开更多选项 -->
+    <div class="add-tab ft14 tc mt20" style="display:none;">
+        <span>更多筛选<i class="caret"></i></span>
+    </div>
+    <!-- 表格 -->
+    <div class="default-tab ft14 pt20">
+        <table class="table table-striped table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="tc">
+                        序号
+                    </th>
+                    <th ms-repeat-im="ShowColumns" ms-visible="im.IsSel" ms-attr-width="im.width">{{im.ColText}}</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr ms-repeat-el="tmpListData">
+                    <td class="tc">
+                        {{$index+1+page.pagecount*(page.pageindex-1)}}
+                    </td>
+                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-visible="im.IsSel" ms-click="View(el.ID,this)">
+                        {{ComFunJS.FnFormat(el[im.ColName],im.format)|html}}
+                    </td>
+                  
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr ms-if="isnull"><td class="tc"></td><td>暂无数据</td></tr>
+            </tfoot>
+        </table>
+        <div class="ui-datatable-page ft14 pl20">
+            <div id="pageDiv" ms-visible="model.page.total>model.pageNum[0].num" class="pull-right"></div>
+            <div class="pull-right" ms-visible="tmpListData.size()!=0">
+                <span>共{{model.page.total}}条记录</span>
+                <span ms-visible="model.page.total>model.pageNum[0].num">
+                    选择每页条数
+                    <select style="height: 25px; width: 50px;" ms-change="selNum(this.value)" ms-duplex="model.page.pagecount">
+                        <option ms-repeat-pg="pageNum" ms-attr-value="pg.num" ms-attr-selected="pg.num==model.page.pagecount?'selected':''">{{pg.num}}</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var tempindex = avalon.define({
+        $id: "ZCGLLIST",
+        curTYPE: "",
+        curUSERGW: "",
+        curBranch: "1728",
+        EWMcode: "",
+        TypeData: [],
+        BranchData: [],
+        GWData: [],
+        tmpListData: [],
+        SelectTYPE: function (type) {
+            tempindex.curTYPE = type;
+            tempindex.LoadUSERGW();
+            tempindex.GetLIST();
+        },
+        SelectBranch: function (val) {
+            $('#large-link').hide();
+            tempindex.curBranch = val;
+            tempindex.curUSERGW = '';
+            tempindex.GWData.clear();
+            tempindex.LoadUSERGW();
+            $('#conGWs').val('');
+            tempindex.LoadTYPE();
+            tempindex.GetLIST();
+        },
+        SelectUSERGW: function (val) {
+            tempindex.curUSERGW = val;
+            if (val == '') {
+                $('#large-link').hide();
+            }
+            else {
+                $('#large-link').show();
+                model.EWMcode = "http://qr.liantu.com/api.php?text=" + ComFunJS.yuming + "/WX/bgxt/branchzc_List.html?gw=" + val + "&bg=ffffff&fg=007457&w=600&logo=" + ComFunJS.yuming + "/View_Mobile/images/tobacco-logo-icon.png";
+                ComFunJS.DrawEWMcancas('cvs', model.EWMcode, val + '资产信息', '', '查看二维码');
+            }//生成部门二维码
+
+            tempindex.LoadTYPE();
+            tempindex.GetLIST();
+        },
+        selNum: function (item) {    //选择显示的条数
+            model.page.pagecount = item;
+            tempindex.GetLIST();
+        },
+        InitWigetData: function () {
+            //显示的列名
+            model.ShowColumns.clear();
+            model.ShowColumns.pushArray([
+                { "ColName": "Name", "ColText": "名称", "IsSel": true, "format": "text", "type": "link" },
+                { "ColName": "Code", "ColText": "编码", "IsSel": true, "format": "text" },
+                { "ColName": "UserGW", "ColText": "部门", "IsSel": true, "format": "text" },
+                { "ColName": "UserRealName", "ColText": "使用人", "IsSel": true, "format": "text" },
+                { "ColName": "LocTitle", "ColText": "存放地点", "IsSel": true, "format": "text", "len": 10 },
+                { "ColName": "Title", "ColText": "类型", "width": "10%", IsSel: true, "format": "text" },
+                { "ColName": "Status", "ColText": "使用状态", "IsSel": true, "format": "zcstatus" },
+            ]);
+            //类型数据
+            
+            
+            tempindex.LoadBranch();
+        },
+        LoadTYPE: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLTYPELISTWITHNUM', { P1: tempindex.curUSERGW, P2: tempindex.curBranch}, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempindex.TypeData = resultData.Result;
+                }
+            })
+        },
+        LoadBranch: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETTHISUSERBRANCHLIST&r=' + Math.random(), {}, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempindex.BranchData = resultData.Result;
+                    tempindex.curBranch = resultData.Result1;
+                    tempindex.LoadUSERGW();
+                    tempindex.LoadTYPE();
+                    //tempindex.GetLIST();
+                }
+            })
+        },
+        LoadUSERGW: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETALLGWBYBRANCHCODE&r=' + Math.random(), { P1: tempindex.curBranch, P2: tempindex.curTYPE }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempindex.GWData = resultData.Result;
+                }
+            })
+        },
+        GetLIST: function () {
+            model.page.pageindex = 1;
+            tempindex.tmpListData.clear();
+            $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLLIST_PAGE', { p: 1, pagecount: model.page.pagecount, searchstr: model.search.searchcontent, typeid: tempindex.curTYPE, usergw: tempindex.curUSERGW, branchcode: tempindex.curBranch }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempindex.tmpListData = resultData.Result;
+                    if (tempindex.tmpListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
+                    model.page.total = resultData.Result1;
+                    laypage({
+                        cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
+                        pages: Math.ceil(parseInt(resultData.Result1) * 1.0 / model.page.pagecount), //通过后台拿到的总页数
+                        curr: 1, //初始化当前页
+                        skin: 'molv',
+                        jump: function (e) { //触发分页后的回调
+                            if (e.curr != model.page.pageindex) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLLIST_PAGE', { p: e.curr, pagecount: model.page.pagecount, searchstr: model.search.searchcontent, typeid: tempindex.curTYPE, usergw: tempindex.curUSERGW, branchcode: tempindex.curBranch  }, function (resultData) {
+                                    if (resultData.ErrorMsg == "") {
+                                        tempindex.tmpListData = resultData.Result;
+                                    }
+                                })
+                                model.page.pageindex = e.curr;
+                            }
+                        }
+                    });
+                }
+            })
+        },
+        View: function (id, event) {
+            ComFunJS.winviewform("/ViewV5/AppPage/ZCGL/ZCGLView.html?ID=" + id + "&r=" + Math.random(), "资产详细信息");
+        },
+
+    })
+</script>

@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>生命周期</title>
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/animate.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
+    <link href="/ViewV5/JS/raty/jquery.raty.css" rel="stylesheet" />
+
+    <style>
+        .add-item {
+            margin-top: 10px;
+            clear: both;
+        }
+
+        i {
+            color: red;
+        }
+    </style>
+
+</head>
+<body ms-controller="LIFECYCLE">
+    <div style="margin: 8px 80px;">
+        <div>
+            <ul class="clearfix" style="display: block;padding:0">
+                <li class="add-item  ">
+                    <i>*</i><label class="add-item-label">标题</label>
+                    <div class="add-ic">
+                        <input type="text" autofocus="autofocus" class="form-control szhl_require" ms-duplex="modelData.Title" />
+                    </div>
+                </li>
+                <li class="add-item  ">
+                    <label class="add-item-label"><i>*</i>类型</label>
+                    <div class="add-ic">
+                        <select name="conType" id="conType" ms-duplex="modelData.TypeID" class="form-control szhl_require" ms-change="ChangeType(this.value)">
+                            <option ms-repeat-item="allowlcData"  ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.TypeID?'selected':''">{{item.TypeName}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item">
+                    <i>*</i><label id="dt_title" class="add-item-label">起止时间</label>
+                    <div>
+                        <div class="add-ic " style="float:left;width: 45%;">
+                            <input type="text" class="form-control szhl_form_date_time szhl_require" ms-duplex="modelData.FromDate">
+                        </div>
+                        <div id="dt_sep" class="add-ic" style="float: left; line-height: 30px; width: 10%; text-align: center;">：</div>
+                        <div id="dt_todate" class="add-ic " style="float:left;width: 45%;">
+                            <input type="text" class="form-control szhl_form_date_time szhl_require" ms-duplex="modelData.ToDate">
+                        </div>
+                    </div>
+                    <div style="clear:both;">
+                    </div>
+                </li>
+
+                <li class="add-item" id="re_block">
+                    <label id="ry_title" class="add-item-label">起止人员</label>
+                    <div>
+                        <div class="add-ic" style="float:left;width: 45%;">
+                            <input type="text" class="form-control " ms-duplex="modelData.FromUser">
+                        </div>
+                        <div id="ry_sep" class="add-ic" style="float: left; line-height: 30px; width: 10%; text-align: center;">-</div>
+                        <div id="ry_touser" class="add-ic " style="float:left;width: 45%;">
+                            <input type="text" class="form-control" ms-duplex="modelData.ToUser">
+                        </div>
+                    </div>
+                    <div style="clear:both;">
+                    </div>
+                </li>
+
+                <li class="add-item all">
+                    <label class="add-item-label">备注</label>
+                    <div class="add-ic">
+                        <textarea class="form-control" id="hycontent" autofocus umheight="250" rows="5" ms-duplex="modelData.Comment"></textarea>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/WFJS.js?ver=20171215"></script>
+    <script src="/ViewV5/JS/YSteps/Steps.js"></script>
+    <script src="/ViewV5/JS/raty/jquery.raty.js"></script>
+    <script>
+        function GetQuery(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(decodeURI(r[2]));
+            else return "";
+        }
+        var model = avalon.define({
+            $id: "LIFECYCLE",
+            LCID: ComFunJS.getQueryString("LCID", 0), //生命周期Id
+            GWData: [],  //部门
+            ZCGLId: window.parent.GetZCGLID(),
+            allowlcData: ComFunJS.LifeCycleTypeData,
+            modelData: { "ComId": "0", "ID": "0", "Title": "", "TypeID": "0", "ZCGLID": "0", "FromDate": "", "ToDate": "", "FromUser": "", "ToUser": "", "Comment": "", "CRUser": ComFunJS.getnowuser(), "CRDate": ComFunJS.getnowdate('yyyy-mm-dd hh:mm'), "IsDel": "0", "AllowLifeCycle": 0,"LifeCycleData":"" },
+            GetModelData: function () {
+                if (model.LCID) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETLIFECYCLEMODEL', { P1: model.LCID }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.modelData = resultData.Result[0];
+                                model.ChangeType(model.modelData.TypeID);
+                            }
+                            
+                            $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETTYPEMODELBYZCGLID', { P1: model.ZCGLId }, function (r) {
+                                if (r.ErrorMsg == "") {
+                                    if (r.Result.length > 0) {
+                                        var rsl = JSON.parse(r.Result[0].LifeCycleData);
+                                        model.allowlcData.clear();
+                                        for (var i = 0; i < rsl.length; i++) {
+                                            if (rsl[i]["Allowed"]) {
+                                                model.allowlcData.push(rsl[i]);
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    })
+                }
+                model.ChangeType(model.modelData.TypeID);
+
+            },
+            ChangeType: function (val) {
+                if (val == '10') {//入库
+                    $('#dt_title').html('时间');
+                    $('#dt_sep').hide();
+                    $('#dt_todate').hide();
+                    $('#ry_block').show();
+                    $('#ry_title').html('人员');
+                    $('#ry_sep').hide();
+                    $('#ry_touser').hide();
+                }
+                else if (val == '20') {//维修
+                    $('#dt_title').html('起止时间');
+                    $('#dt_sep').show();
+                    $('#dt_todate').show();
+                    $('#ry_block').hide();
+                    $('#ry_title').html('人员');
+                    $('#ry_sep').hide();
+                    $('#ry_touser').hide();
+                }
+                else if (val == '30') {//变更
+                    $('#dt_title').html('时间');
+                    $('#dt_sep').hide();
+                    $('#dt_todate').hide();
+                    $('#ry_block').show();
+                    $('#ry_title').html('起止人员');
+                    $('#ry_sep').show();
+                    $('#ry_touser').show();
+                }
+                else if (val == '40') {//借出
+                    $('#dt_title').html('时间');
+                    $('#dt_sep').hide();
+                    $('#dt_todate').hide();
+                    $('#ry_block').show();
+                    $('#ry_title').html('人员');
+                    $('#ry_sep').hide();
+                    $('#ry_touser').hide();
+                }
+                else if (val == '90') {//报废
+                    $('#dt_title').html('时间');
+                    $('#dt_sep').hide();
+                    $('#dt_todate').hide();
+                    $('#ry_block').hide();
+                    $('#ry_title').html('人员');
+                    $('#ry_sep').hide();
+                    $('#ry_touser').hide();
+                }
+                else if (val == '110') {//打印机加粉
+                    $('#dt_title').html('时间');
+                    $('#dt_sep').hide();
+                    $('#dt_todate').hide();
+                    $('#ry_block').show();
+                    $('#ry_title').html('人员');
+                    $('#ry_sep').hide();
+                    $('#ry_touser').hide();
+                }
+                else if (val == '120') {//打印机更换硒鼓
+                    $('#dt_title').html('时间');
+                    $('#dt_sep').hide();
+                    $('#dt_todate').hide();
+                    $('#ry_block').show();
+                    $('#ry_title').html('人员');
+                    $('#ry_sep').hide();
+                    $('#ry_touser').hide();
+                }
+            },
+        });
+
+        avalon.ready(function () {
+            model.GetModelData();
+            setTimeout(" ComFunJS.initForm()", 500);
+        })
+
+        function getLC() {
+            return JSON.stringify(model.modelData.$model);
+        }
+    </script>
+</body>
+</html>

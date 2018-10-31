@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>会议室</title>
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css?ver=20171228" rel="stylesheet" />
+    <link rel="stylesheet" href="/View_Mobile/css/sm.min.css">
+    <link rel="stylesheet" href="/WX/CSS/wxstyle.css">
+    <style>
+        .content {
+            padding-bottom: 2rem;
+        }
+
+        .list-group-title {
+            position: fixed !important;
+            top: 0;
+            width: 100%;
+        }
+
+        .list-group ul {
+            margin-top: 2rem;
+        }
+        .item-inner {
+            border-bottom: solid 1px #ccc;
+        }
+        .chartbox::after {
+            content: "\e96d";
+            display: block;
+            font-family: icomoon;
+            float: right;
+            font-size: 1rem;
+            line-height: 1.2rem;
+        }
+    </style>
+</head>
+<body ms-controller="BGXT">
+    <div class="page page-current " id="pageindex1">
+        <div class="content native-scroll">
+            <div class="list-block contacts-block" style="margin:0px;" ms-if="model.crowdName!=''">
+                <div class="list-group">
+                    <div class="list-group-title">{{model.chartGroupName}}<span class="chartbox" ms-click="gochart(model.chartGroupName)"></span></div>
+                    <ul>
+                        <li ms-repeat-el="userList">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                        {{el.UserRealName}}
+                                        <div class="light">
+                                            <span><a ms-attr-href="tel:{{el.mobphone}}" external><i class="fa  fa-mobile-phone"></i>{{el.mobphone}}</a></span>
+                                        </div>
+                                    </div>
+                                    <!--<div>
+                                        <span class="" ms-if="el.UserGW">
+                                            {{el.UserGW}}
+                                        </span>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <footer class="footer-nav-group">
+            <ul>
+                <li>
+                    <div ms-on-click="showsubpage(this)" ms-on-blur="onblur(this)">
+                        政策法规
+                        <ul class="sub-nav">
+                            <li ms-on-click="gopage('/View_Mobile/UI/UI_XXFB_LIST.html?id=612&name=法律&r='+ Math.random())">
+                                法律
+                            </li>
+                            <li ms-on-click="gopage('/View_Mobile/UI/UI_XXFB_LIST.html?id=613&name=营销&r='+ Math.random())">
+                                营销
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div ms-on-click="showsubpage(this)" ms-on-blur="onblur(this)">
+                        办公系统
+                        <ul class="sub-nav">
+                            <li ms-on-click="gopage('/wx/bgxt/hy_list.html?r='+ Math.random())">
+                                会议记录
+                            </li>
+                            <li ms-on-click="gopage('/wx/bgxt/zc_list.html?r='+ Math.random())">
+                                固定资产
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div ms-on-click="showsubpage(this)" ms-on-blur="onblur(this)">
+                        我的
+                        <ul class="sub-nav">
+                            <li ms-on-click="gopage('/wx/bgxt/index.html?r='+ Math.random())">
+                                会议室
+                            </li>
+                            <li ms-on-click="gopage('/wx/me.html?r='+ Math.random())">
+                                个人信息
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </footer>
+    </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/avalon.min.js"></script>
+    <script src="/wx/JS/WxControl.js"></script>
+    <script>
+        var model = avalon.define({
+            $id: "BGXT",
+            userData: {},
+            userList: [],
+            crowdName: "",
+            chartGroupName: "",
+            gogroup: function (g) {
+                window.location = "/WX/zlxz/group_member.html?g=" + g + "&r=" + Math.random();
+            },
+            gochart: function (g) {
+                window.location = "/WX/Message/bgxtbox.html?g=" + g + "&r=" + Math.random();
+            },
+            inittemp: function () {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETUSERINFO&r=" + Math.random(), {}, function (r) {
+                    if (r.ErrorMsg == "") {
+                        model.userData = r.Result;
+                    }
+                })
+
+                $.getJSON("/API/VIEWAPI.ashx?Action=WXGL_GETMYCROWD&r=" + Math.random(), {}, function (r) {
+                    model.loading = false;
+                    if (r.ErrorMsg == "") {
+                        model.userList.pushArray(r.Result);
+                        model.crowdName = r.Result1;
+                        model.chartGroupName = r.Result2;
+                    }
+                })
+            },
+            showsubpage: function (t) {
+
+                if ($(t).children(".sub-nav").css("display") == "block") {
+                    $(".sub-nav").hide();
+                }
+                else {
+                    $(".sub-nav").hide();
+                    $(t).children(".sub-nav").show();
+                }
+            },
+            gopage: function (url) {
+                if (url)
+                    window.location.href = url;
+            },
+            onblur: function (t) {
+                $(t).hide();
+            },
+        })
+
+        avalon.ready(function () {
+            model.inittemp();
+        })
+
+        window.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+                window.location.reload()
+            }
+        })
+    </script>
+</body>
+</html>

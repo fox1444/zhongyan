@@ -1,0 +1,172 @@
+﻿﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>资产信息</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/WX/CSS/sm.min.css">
+    <link rel="stylesheet" href="/WX/CSS/sm-extend.min.css">
+    <link href="/View_Mobile/CSS/szhlextend.css?ver=20160904" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="/View_Mobile/CSS/animate.css">-->
+    <style type="text/css">
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+
+        .card-content {
+            padding-bottom: .5rem;
+        }
+
+        .card-header, .card-item, .ft14 {
+            font-size: 0.8rem;
+            padding-bottom: 0.2rem;
+        }
+
+        .lookright-box, .crm-dt {
+            font-size: 0.7rem;
+        }
+
+        .c666 {
+            color: #666 !important;
+        }
+
+        .c999 {
+            color: #999 !important;
+        }
+    </style>
+</head>
+<body ms-controller="ZCDetail">
+    <div class="page-group">
+        <div class="page page-current" id="pageindex1">
+            <div class="buttons-tab">
+                <a href="#" class="tab-link button external">{{model.TitleInfo}}</a>
+            </div>
+            <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50" style="margin-top:2rem" id="touchcontent">
+                <div class="list-container">
+                    <div class="card facebook-card animated fadeInUp">
+                        <div class="card-header no-border" ms-on-click="showdetil(el)">
+                            <div class=" head-ft16">
+                                {{modelData.Name}}
+                            </div>
+                            <!--<div class=" head-ft16">
+                                <span class="c999 ">{{modelData.RegistDate|date("yy年M月d日")}}</span>
+                            </div>-->
+                            <div style="clear:both"></div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-item" ms-repeat-im="ShowColumns" ms-visible="modelData[im.ColName]" ms-class-1="{{modelData.class}}">
+                                <span class="c999 title-item">{{im.ColText}}</span>
+                                <span>{{ComFunJS.FnFormat(modelData[im.ColName],im.format)|html}}</span>
+                            </div>
+                        </div>
+
+                        <div ms-visible="LCData.size()>0">
+                            <div class="lookright-box">
+                                <div class="menu-general">
+                                    <ul>
+                                        <li class="active">
+                                            <a>生命周期</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="crm-dt" ms-repeat-item="LCData">
+                                <span class="crm-yuan"></span>
+                                <div class="crm-dt-cont">
+                                    <div class="m5">
+                                        <p class="c666">
+                                            <!--<b>【{{ComFunJS.FnFormat(item.TypeID,"lfcytype")|html}}】</b>> <span>{{item.Title}}</span>-->
+                                            <div style="padding-left:8px;">{{ComFunJS.CheckType(item)}}</div>
+                                        </p>
+                                        <h3 class="c999" style="padding-left:10px;">{{ComFunJS.bqhContent(item.Comment)|html}}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm-extend.min.js' charset='utf-8'></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <script src="/View_Mobile/JS/touch/toucher.js"></script>
+    <script src="/View_Mobile/JS/avalon1.47.js"></script>
+    <script src="/View_Mobile/JS/raty/jquery.raty.js?v=1.3"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script>
+        var model = avalon.define({
+            $id: "ZCDetail",
+            modelData: {},
+            ShowColumns: [],
+            LCData: [],
+            TitleInfo: "",
+            strId: ComFunJS.getQueryString("ID"),
+            covtitle: function (title) {
+                return ComFunJS.convstr($("<div>" + title + "</div>").text(), 25);
+            },//转化 TITLE信息
+            GetModelData: function () {
+                if (model.strId) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPINOLOGIN.ashx?Action=ZCGL_GETZCGLMODEL', { P1: model.strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.modelData = resultData.Result[0];
+                            }
+                            if (model.modelData.UserRealName != "")
+                                model.TitleInfo = model.modelData.UserRealName + ' - ' + model.modelData.Name
+                            else
+                                model.TitleInfo = model.modelData.Name
+                            setTimeout(" ComFunJS.initForm()", 500)
+                        }
+                    })
+                }
+            },
+            GetLfCyList: function () {
+                if (model.strId) {
+                    $.getJSON('/API/VIEWAPINOLOGIN.ashx?Action=ZCGL_GETLIFECYCLLISTBYZCGLID', { P1: model.strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.LCData = resultData.Result;
+                            }
+                        }
+                    })
+                }
+            },
+        })
+
+        avalon.ready(function () {
+            model.ShowColumns.pushArray(
+                [
+                    { "ColName": "Code", "ColText": "资产编码", "IsSel": true },
+                    //{ "ColName": "Name", "ColText": "资产名称", "IsSel": true, "class": "width50" },
+                    //{ "ColName": "RegistDate", "ColText": "开始使用日期", "IsSel": true, "class": "width50", "format": "dateformat" },
+                    { "ColName": "Title", "ColText": "资产类型", "width": "10%", IsSel: true, "class": "width50" },
+                    { "ColName": "Status", "ColText": "使用状态", "IsSel": true, "class": "width50", "format": "zcstatus" },
+                    { "ColName": "Qty", "ColText": "数量", "IsSel": true, "class": "width50" },
+                    //{ "ColName": "DeptName", "ColText": "公司", "IsSel": true, "class": "width50" },
+                    { "ColName": "UserGW", "ColText": "使用部门", "IsSel": true, "class": "width50" },
+                    { "ColName": "UserRealName", "ColText": "使用人", "IsSel": true, "class": "width50" },
+                    { "ColName": "LocTitle", "ColText": "存放地点", "IsSel": true, "class": "width50" },
+                    { "ColName": "Tag", "ColText": "标签", "IsSel": true, "class": "width50" },
+                    { "ColName": "EPCode", "ColText": "EPC编码", "IsSel": true, "class": "width50" },
+                    { "ColName": "FactoryCode", "ColText": "出厂编码", "IsSel": true, "class": "width50" },
+                    { "ColName": "OrginalPrice", "ColText": "原值(元)", "IsSel": true, "class": "width50" },
+                    { "ColName": "PresentPrice", "ColText": "现值(元)", "IsSel": true, "class": "width50" },
+                    { "ColName": "Depreciation", "ColText": "折旧年限", "IsSel": true, "class": "width50" },
+                    { "ColName": "Managezhiwu", "ColText": "管理部门", "IsSel": true, "class": "width50" },
+                    { "ColName": "Comment", "ColText": "备注", "IsSel": true },
+                ]);
+
+            model.GetModelData();
+            model.GetLfCyList();
+        })
+    </script>
+</body>
+</html>

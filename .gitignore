@@ -149,3 +149,7 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+/.vs/QJ_Signle/v15/Server/sqlite3/db.lock
+/.vs/QJ_Signle/v15/Server/sqlite3/storage.ide
+/.vs/QJ_Signle/v15/Server/sqlite3/storage.ide-wal
+/.vs/QJ_Signle/v15/Server/sqlite3/storage.ide-shm

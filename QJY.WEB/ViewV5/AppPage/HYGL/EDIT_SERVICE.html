@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>服务人员</title>
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/animate.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
+    <link href="/ViewV5/JS/raty/jquery.raty.css" rel="stylesheet" />
+
+    <style>
+        .add-item {
+            margin-top: 10px;
+            clear: both;
+        }
+
+        i {
+            color: red;
+        }
+    </style>
+
+</head>
+<body ms-controller="HYGLSERVICE">
+    <div style="margin: 8px 80px;">
+        <div>
+            <ul class="clearfix" style="display: block;padding:0">
+                <li class="add-item  ">
+                    <label class="add-item-label"><i>*</i>姓名</label>
+                    <div class="add-ic">
+                        <input type="text" autofocus="autofocus" class="form-control szhl_require" ms-duplex="modelData.Name" />
+                    </div>
+                </li>
+                <li class="add-item  ">
+                    <label class="add-item-label"><i>*</i>联系电话</label>
+                    <div class="add-ic">
+                        <input type="text" class="form-control szhl_require" ms-duplex="modelData.Mobphone" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/WFJS.js?ver=20171215"></script>
+    <script src="/ViewV5/JS/YSteps/Steps.js"></script>
+    <script src="/ViewV5/JS/raty/jquery.raty.js"></script>
+    <script>
+        var model = avalon.define({
+            $id: "HYGLSERVICE",
+            ServiceID: ComFunJS.getQueryString("ServiceID", 0), //服务人员Id
+            HYGLID: window.parent.GetHYGLID(),
+            modelData: { "ComId": "0", "ID": "0", "Name": "", "Mobphone": "", "HYGLID": window.parent.GetHYGLID(), "CRUser": ComFunJS.getnowuser(), "CRDate": ComFunJS.getnowdate('yyyy-mm-dd hh:mm') },
+            GetModelData: function () {
+                if (model.ServiceID) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_GETSERVICEMODEL', { P1: model.ServiceID }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.modelData = resultData.Result[0];
+                            }
+                        }
+                    })
+                }
+            },
+        });
+
+        avalon.ready(function () {
+            model.GetModelData();
+        })
+
+        function getService() {
+            return JSON.stringify(model.modelData.$model);
+        }
+    </script>
+</body>
+</html>
