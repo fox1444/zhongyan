@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title></title>
+</head>
+<body ms-controller="detail">
+    <div class="index-html">
+        <a href="#" ms-click="go_detail()">短连接</a>
+    </div>
+    <script src="/View_Mobile/js/zepto.min.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.js"></script>
+    <script>
+        var tempmodel = avalon.define({
+            $id: "detail",
+            go_detail: function () {
+                $.ajax({
+                    url: 'http://api.t.sina.com.cn/short_url/shorten.json?source=1681459862&url_long=http://www.lstobacco.com/view_mobile/ui/HyDetail_index_r.html?id=271',
+                    type: "GET",
+                    dataType: "jsonp",
+                    cache: false,
+                    success: function (data) {
+                        alert(JSON.stringify(data.data.urls[0].url_short));
+                    }
+                });
+                //$.getJSON('http://api.weibo.com/2/short_url/shorten.json?source=2849184197&url_long=http://www.lstobacco.com/view_mobile/ui/HyDetail_index_r.html?id=271', {  }, function (r) {
+                //    if (r) {
+                //        alert(JSON.stringify(r));
+                //    }
+                //})
+            }
+        })
+    </script>
+</body>
+</html>

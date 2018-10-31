@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>定位</title>
+</head>
+<body>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script src="http://www.lstobacco.com/View_Mobile/JS/Jquery2.1.js"></script>
+    <script src="http://www.lstobacco.com/WX/JS/WxGetLocation.js"></script>
+    <script type="text/javascript">
+
+        //data为配置信息，丛台使用getresponse从 “http://www.lstobacco.com/API/VIEWAPINOLOGIN.ashx?action=WXGL_GETWXCONFIG&P1=http://www.lstobacco.com/wx/getlocation.html” 获取信息后绑定
+        var data = {
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: "wx1b5c7dbfe9a3555d", // 必填，公众号的唯一标识
+            timestamp: 1538229461, // 必填，生成签名的时间戳
+            nonceStr: "0Kn8AvDKka6K96S", // 必填，生成签名的随机串
+            signature: "2ed0e5bad61c3c04853a1e81836cad848f972bad",// 必填，签名，见附录1
+            jsApiList: ['getLocation']
+        };
+        var wxmap = new WXLocation(data);
+
+        $(document).ready(function () {
+            wxmap.initWX();
+        });
+    </script>
+    <div id="html">
+    </div>
+    <button onclick="wxmap.Refresh()">刷新</button>
+</body>
+</html>

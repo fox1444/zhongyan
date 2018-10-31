@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>会议详情</title>
+    <link href="/View_Mobile/js/layer/need/layer.css" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/add.css?ver=2" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/szhlextend.css?ver=20160904" rel="stylesheet" />
+
+</head>
+<body  ms-controller="Hydetail">
+    <!--<div class="weui_cells_title">基本信息</div>-->
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">申请人</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{ComFunJS.convuser(modelData.FQUser)}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">会议主题</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{modelData.Title}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">开始时间</label></div>
+            <div class="weui_cell_bd weui_cell_primary" ms-if="modelData.StartTime">
+                {{modelData.StartTime|date('yyyy-MM-dd HH:mm')}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">结束时间</label></div>
+            <div class="weui_cell_bd weui_cell_primary" ms-if="modelData.EndTime">
+                {{modelData.EndTime|date('yyyy-MM-dd HH:mm')}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">会议室</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{modelData.Name}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">会前提醒</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{modelData.TXSJ=="-1"?"不提醒":modelData.TXSJ}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">参会人</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{ComFunJS.convusers(modelData.CYUser)}}
+            </div>
+        </div>
+   
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">日程安排</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{modelData.Details|html}}
+            </div>
+        </div>
+    </div>
+    <div class="weui_cells_title">其他信息<a class="show-up" ms-click="isZK()" id="zk">展开</a></div>
+    <div class="weui_cells weui_cells_form" ms-if="isDeploy == 1">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">会议服务</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{modelData.HYFW|html}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">主持人</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{ComFunJS.convusers(modelData.ZCUser)}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">纪要人</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{ComFunJS.convusers(modelData.JLUser)}}
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">摄像人</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                {{ComFunJS.convusers(modelData.SXUser)}}
+            </div>
+        </div>
+    </div>
+    <div class="weui_cells_title" ms-visible="modelData.Files">文件</div>
+    <div class="weui_cells weui_cells_form" ms-visible="modelData.Files">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <div class="viewimg">{{modelData.Files}}</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/View_Mobile/js/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/avalon1.47.js"></script>
+    <script src="/View_Mobile/js/ComFunJS.js"></script>
+    <script>
+        var tempmodel = avalon.define({
+            $id: "Hydetail",
+            ColumnData: [],
+            name: "会议管理",
+            iswf: true,//是否属于流程表单
+            tpData: [],
+            userpl: 0,
+            usertype: "",
+            isjl: "",
+            Name: "",
+            wximg: "",
+            dataid: ComFunJS.getQueryString('id'),
+            isDeploy: 0,
+            RoomID: ComFunJS.getQueryString("rid"),
+            isZK: function () {
+                if (tempmodel.isDeploy == 0) {
+                    tempmodel.isDeploy = 1;
+                    $("#zk").text("收起");
+                }
+                else {
+                    tempmodel.isDeploy = 0;
+                    $("#zk").text("展开");
+                }
+                //tempmodel.isDeploy == 0 ? 1 : 0;
+            },
+            inittemp: function (strId) {
+                strId = tempmodel.dataid;
+               
+                if (strId) {
+                
+                    $.getJSON('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_GETHYGLMODELNOLOGIN', { P1: strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            tempmodel.modelData = resultData.Result[0];
+                            tempmodel.tpData = resultData.Result1;
+
+                            if (resultData.Result.JLUser) {
+                                var JLUserList = resultData.Result.JLUser.split(',');
+
+                                var un = ComFunJS.getCookie("username");
+                                if (JLUserList.indexOf(un) != -1 || resultData.Result.FQUser.split(',').indexOf(un) != -1) {
+                                    tempmodel.isjl = "1";
+                                }
+                            }
+
+
+                            //ComFunJS.uploadimgnew(tempmodel.tpData);
+                            ComFunJS.viewimg(tempmodel.tpData, '1');
+
+                            if (tempmodel.modelData.StartTime && tempmodel.modelData.StartTime.length > 16) {
+                                tempmodel.modelData.StartTime = tempmodel.modelData.StartTime.substring(0, 16);
+                            }
+                            if (tempmodel.modelData.StartTime) {
+                                var ss = tempmodel.modelData.StartTime.split(' ');
+                                var ss1 = ss[0].split('-');
+                                var ss2 = ss[1].split(':');
+                                var hh = ss2[0];
+                                if (hh.substring(0, 1) == "0") { hh = hh.substring(1, 1); }
+                                $("#StartTime").datetimePicker({
+                                    value: [ss1[0], ss1[1], ss1[2], hh, ss2[1]]
+                                });
+                            }
+                            if (tempmodel.modelData.EndTime && tempmodel.modelData.EndTime.length > 16) {
+                                tempmodel.modelData.EndTime = tempmodel.modelData.EndTime.substring(0, 16);
+                            }
+
+                            if (tempmodel.modelData.EndTime) {
+                                var ss = tempmodel.modelData.EndTime.split(' ');
+                                var ss1 = ss[0].split('-');
+                                var ss2 = ss[1].split(':');
+                                var hh = ss2[0];
+                                if (hh.substring(0, 1) == "0") { hh = hh.substring(1, 1); }
+                                $("#EndTime").datetimePicker({
+                                    value: [ss1[0], ss1[1], ss1[2], hh, ss2[1]]
+                                });
+                            }
+
+                            setTimeout(" ComFunJS.initForm()", 500)
+                        }
+                    })
+                }
+                else {
+                    var dates = ComFunJS.getnowdate("yyyy-mm-dd-hh-mm").split('-');
+                    $("#StartTime").datetimePicker({
+                        value: [dates[0], dates[1], dates[2], dates[3], dates[4]]
+                    });
+                    $("#EndTime").datetimePicker({
+                        value: [dates[0], dates[1], dates[2], dates[3], dates[4]]
+                    });
+
+                    tempmodel.modelData.StartTime = dates[0] + "-" + dates[1] + "-" + dates[2] + " " + dates[3] + ":" + dates[4];
+                    tempmodel.modelData.EndTime = dates[0] + "-" + dates[1] + "-" + dates[2] + " " + dates[3] + ":" + dates[4];
+
+                    ComFunJS.uploadimgnew();
+                    ComFunJS.initForm();
+                }
+            },//初始化
+            modelData: { "RoomID": "", "Title": "", "Details": "", "StartTime": "", "EndTime": "", "CYUser": "", "FQUser": "", "TXSJ": "-1", "HYJL": "", "Remark": "", "JLFiles": "", "Files": "", "JLUser": "", "ZCUser": "", "SXUser": "", "HYFW": "" }
+            
+        });
+
+        avalon.ready(function () {
+            tempmodel.inittemp();
+        })
+    </script>
+</body>
+</html>

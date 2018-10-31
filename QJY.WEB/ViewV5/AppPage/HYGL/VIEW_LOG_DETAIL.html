@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>日志详情</title>
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/animate.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
+    <link href="/ViewV5/JS/raty/jquery.raty.css" rel="stylesheet" />
+</head>
+<body ms-controller="HYGLLOGDETAIL">
+    <div style="margin: 8px 30px;">
+        <div>
+            <table class="table-con">
+                <tr>
+                    <th>姓名</th>
+                    <th>联系电话</th>
+                    <th>使用日期</th>
+                </tr>
+                <tr ms-repeat-el="LogData">
+                    <td>{{el.Name}}</td>
+                    <td>{{el.Mobphone}}</td>
+                    <td>{{el.CRDate}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/WFJS.js?ver=20171215"></script>
+    <script src="/ViewV5/JS/YSteps/Steps.js"></script>
+    <script src="/ViewV5/JS/raty/jquery.raty.js"></script>
+
+    <script>
+        var model = avalon.define({
+            $id: "HYGLLOGDETAIL",
+            HYGLID: window.parent.GetHYGLID(),
+            USERID: ComFunJS.getQueryString("UserID", 0),
+            LogData: [],
+            UserStr: "",
+            GetList: function () {
+                if (model.HYGLID && model.USERID) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=HYGL_GETOUTUSERLOGLISTBYHYGLID", { P1: model.HYGLID, P2: model.USERID }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.LogData = resultData.Result;
+                            }
+                        }
+                    })
+                }
+            },
+        });
+
+        avalon.ready(function () {
+            model.GetList();
+        })
+    </script>
+</body>
+</html>

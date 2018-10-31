@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>会议详情</title>
+    <!--<link href="/View_Mobile/js/layer/need/layer.css" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/add.css?ver=2" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/szhlextend.css?ver=20160904" rel="stylesheet" />-->
+    <link href="/View_Mobile/CSS/tobaccoHtml.css" rel="stylesheet" />
+</head>
+<body ms-controller="Hydetail" class="hy_wrap_r">
+    <div class="index-html">
+    </div>
+    <div class="hy_wrap" id="hy_wrap">
+        <!--<div class="invitation">
+            INVITATION
+        </div>-->
+        <div class="logo">
+        </div>
+        <div class="title">
+            {{modelData.Title|html}}
+        </div>
+        <div class="infomation" style="display:none;">
+            时间：{{modelData.TitleTime}}
+        </div>
+        <div class="infomation" style="display:none;">
+            地址：{{modelData.Name}}
+        </div>
+        <div class="default_block" style="display:none;">
+            <div class="infomation">
+                尊敬的<span style="color:red">{{currentuser.Name}}</span>，欢迎您参加本次会议
+            </div>
+            <div class="infomation" ms-if="currentuser.ServiceUserName!=''">
+                您的专属联络员是<span class="mobphone">{{ComFunJS.SetContactPhone(currentuser.ServiceUserMobphone,currentuser.ServiceUserName)|html}}</span>，
+                点击<span class="mobphone" style=" text-decoration:underline;">{{ComFunJS.SetContactPhone(currentuser.ServiceUserMobphone)|html}}</span>与她联系
+            </div>
+            <div class="gobutton gobutton_r">
+                <div class="fl-left">
+                    <span ms-on-click="re_input()" style="float:right; margin-bottom:30px;">重新输入</span>
+                </div>
+                <div class="fl-right">
+                    <span ms-on-click="view_detail()" style="float:left;margin-bottom:30px;">进入会议</span>
+                </div>
+            </div>
+        </div>
+        <div class="list_block" style="display:none;">
+            <div class="infomation" style="color:red;">
+                请选择您登录的账号：
+            </div>
+            <div ms-repeat-el="currentuserlist" class="infomation">
+                <a href="#" ms-on-click="selectuser(el)" style="color:green;">{{el.OutDeptName}}{{el.Zhiwu}}{{el.Name}}</a>
+            </div>
+        </div>
+        <div class="input_block" style="display:none;">
+            <div class="phonenumber">
+                <input type="text" id="phone_input" placeholder="请输入姓名或手机号" ms-duplex="phonenumberorname">
+            </div>
+            <div class="gobutton2">
+                <span id="phone_input_submit" ms-on-click="go_detail()">进入会议</span>
+            </div>
+        </div>
+        <div class="subtitle">
+            {{modelData.SubTitle}}
+        </div>
+
+        <div class="shutoff_msg" style="display:none;">
+            会议已结束，感谢您的参会！
+            <div class="subtitle" style="font-size:80%; bottom:1px;">
+                技术支持：<a href="tel:13980444473" style="text-decoration:underline;">13980444473</a>
+            </div>
+        </div>
+    </div>
+    <script src="/View_Mobile/js/layer/layer.m.js"></script>
+    <script src="/View_Mobile/js/zepto.min.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.js"></script>
+    <script src="/View_Mobile/JS/raty/jquery.raty.js?v=1.3"></script>
+    <script src="/View_Mobile/js/ComFunJS.js"></script>
+    <script>
+        var tempmodel = avalon.define({
+            $id: "Hydetail",
+            ColumnData: [],
+            name: "会议管理",
+            iswf: true,//是否属于流程表单
+            tpData: [],
+            userpl: 0,
+            usertype: "",
+            modelData: { "RoomID": "", "Title": "", "Details": "", "StartTime": "", "EndTime": "", "CYUser": "", "FQUser": "", "TXSJ": "-1", "HYJL": "", "Remark": "", "JLFiles": "", "Files": "", "JLUser": "", "ZCUser": "", "SXUser": "", "HYFW": "", "IsOff": false, "Template": "", "Video1Title": "", "Video2Title": "", "Video3Title": "", "Video1Url": "", "Video2Url": "", "Video3Url": "" },
+            currentuser: { "ID": "", "Name": "", "Mobphone": "", "OutDeptName": "", "Zhiwu": "", "DisplayOrder": 0, "Zhiwu": "", "ServiceUserName": "", "ServiceUserMobphone": "" },
+            currentuserlist: [],
+            logdata: { "ComId": 0, "UserID": 0, "Name": "", "Mobphone": "", "HYGLID": 0 },
+            Name: "",
+            phonenumberorname: '',
+            dataid: ComFunJS.getQueryString('id'),
+            RoomID: ComFunJS.getQueryString("rid"),
+            view_detail: function () {
+                var pnum = ComFunJS.getCookie("outuserid");
+                if (pnum) {
+                    $.getJSON('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_GETHYGLMODELBYOUTERUSERID', { P1: tempmodel.dataid, P2: pnum }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result[0]) {
+                                location.href = "/View_Mobile/UI/HyDetail_step" + tempmodel.modelData.Template + ".html?id=" + tempmodel.dataid + "&r=" + Math.random();
+                            }
+                            else {
+                                $('.input_block').show();
+                                $('.default_block').hide();
+                            }
+                        }
+                    })
+                }
+                else {
+                    $('.input_block').show();
+                    $('.default_block').hide();
+                    $('#phone_input').focus();
+                }
+            },//跳转到详情页面
+            go_detail: function () {
+                var pn = $('#phone_input').val();
+                if ($.trim(pn) == "") {
+                    msg = "请输入姓名或手机号";
+                    ComFunJS.winwarning(msg);
+                    return;
+                }
+
+                $.getJSON('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_GETHYGLMODELBYPHONEORNAME', { P1: tempmodel.dataid, P2: pn }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        if (resultData.Result[0]) {
+                            if (resultData.Result5.length > 0) {
+                                if (resultData.Result5.length == 1) {  //只有一条数据的情况
+                                    tempmodel.currentuser = resultData.Result5[0];
+                                    ComFunJS.setCookieMinute("outuserid", tempmodel.currentuser.ID, 4320);
+                                    $('.input_block').hide();
+                                    $('.list_block').hide();
+                                    $('.default_block').show();
+                                    tempmodel.signlog();
+                                }
+                                else {//多条数据的情况
+                                    tempmodel.currentuserlist = resultData.Result5;
+                                    $('.input_block').hide();
+                                    $('.list_block').show();
+                                    $('.default_block').hide();
+                                }
+                            }
+                        }
+                        else {
+                            $('.input_block').show();
+                            $('.list_block').hide();
+                            $('#phone_input').focus();
+                            $('.default_block').hide();
+                            ComFunJS.winwarning("未查询到您的参会记录");
+                            return;
+                        }
+                    }
+                })
+            },//输入手机或姓名后加载
+            selectuser: function (u) {
+                if (u) {
+                    tempmodel.currentuser = u;
+                    ComFunJS.setCookieMinute("outuserid", tempmodel.currentuser.ID, 60);
+                    $('.input_block').hide();
+                    $('.list_block').hide();
+                    $('.default_block').show();
+                    tempmodel.signlog();
+                }
+            },
+            re_input: function () {
+                $('.input_block').show();
+                $('.list_block').hide();
+                $('.default_block').hide();
+                $('#phone_input').focus();
+                $('#phone_input').val('');
+            },
+            inittemp: function (strId) {
+                strId = tempmodel.dataid;
+                if (strId) {
+                    $.getJSON('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_GETHYGLMODELNOLOGIN', { P1: strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "" && resultData.Result[0]) {
+                            resultData.Result[0].IsOff = resultData.Result[0].IsOff == 0 ? false : true;
+                            if (resultData.Result[0].IsOff) {
+                                //location.href = "/ViewV5/index.html";
+                                $('.shutoff_msg').show();
+                            } else {
+                                $('.infomation').show();
+                                tempmodel.modelData = resultData.Result[0];
+                                document.title = tempmodel.modelData.Title.replace('<br/>', '') + "公告";
+                                tempmodel.tpData = resultData.Result1;
+
+                                var pn = ComFunJS.getCookie("outuserid");
+                                if (pn && pn != null && pn != undefined && pn != '') {
+                                    $.getJSON("/API/VIEWAPINOLOGIN.ashx?action=HYGL_GETOUTUSERMODELBYID&r=" + Math.random(), { P1: tempmodel.dataid, P2: pn }, function (r) {
+                                        if (r.ErrorMsg == "") {
+                                            if (r.Result.length > 0) {
+                                                tempmodel.currentuser = r.Result[0];
+                                                $('.input_block').hide();
+                                                $('.list_block').hide();
+                                                $('.default_block').show();
+                                            }
+                                            else {
+                                                $('.input_block').show();
+                                                $('.list_block').hide();
+                                                $('.default_block').hide();
+                                            }
+                                        }
+                                    });
+                                }
+                                else {
+                                    $('.input_block').show();
+                                    $('.list_block').hide();
+                                    $('.default_block').hide();
+                                }
+                            }
+                        }
+                    })
+                }
+
+                $('#phone_input').on('focus', function () {
+                    var _this = $('#phone_input_submit');
+                    setTimeout(function () {
+                        _this.scrollIntoView(true);
+                        _this.scrollIntoViewIfNeeded();
+                    }, 200);
+                })
+            },//初始化
+            signlog: function () {
+                tempmodel.logdata.ComId = tempmodel.currentuser.ComId;
+                tempmodel.logdata.UserID = tempmodel.currentuser.ID;
+                tempmodel.logdata.Name = tempmodel.currentuser.Name;
+                tempmodel.logdata.Mobphone = tempmodel.currentuser.Mobphone;
+                tempmodel.logdata.HYGLID = tempmodel.modelData.ID;
+                //alert(JSON.stringify(tempmodel.logdata.$model));
+                $.post('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_ADDOUTUSERLOG', { P1: JSON.stringify(tempmodel.logdata.$model) }, function (r) {
+                    if (r.ErrorMsg == "") {
+                    }
+                });
+            },
+        });
+
+        avalon.ready(function () {
+            tempmodel.inittemp();
+            if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 22 + 'px';
+            }
+            //document.documentElement.style.fontSize = document.documentElement.clientWidth / 22 + 'px';
+        })
+
+        $(window).on("load resize", function () {
+            var h = document.documentElement.clientHeight || window.innerHeight;
+            $(".hy_wrap").css("height", h);
+        });
+    </script>
+</body>
+</html>

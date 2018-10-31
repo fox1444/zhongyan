@@ -1,0 +1,72 @@
+﻿<div style="background:#fbf9fe" ms-controller="WXGROUP">
+    <div>
+        <!--<div class="weui_cells_title">基本信息</div>-->
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label label">小组名称</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input ms-duplex="modelData.GroupName" type="text" placeholder="请输入小组名称" class="szhl szhl_require weui_input" />
+                </div>
+            </div>
+        </div>
+        <div class="weui_cells_title">小组公告</div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd" style="display:none;"><label class="weui_label label">小组公告</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea ms-duplex="modelData.Content" rows="3" placeholder="请输入小组公告" class="szhl weui_textarea"></textarea>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+
+
+<script>
+    var tempmodel = avalon.define({
+        $id: "WXGROUP",
+        ColumnData: [],
+        name: "微信小组",
+        iswf: true,//是否属于流程表单
+        tpData: [],
+        userpl: 0,
+        usertype: "",
+        isjl: "",
+        Name: "",
+        wximg: "",
+        dataid: "",
+        isDeploy: 0,
+        groupcode: ComFunJS.getQueryString("GroupCode"),
+        isZK: function () {
+            if (tempmodel.isDeploy == 0) {
+                tempmodel.isDeploy = 1;
+                $("#zk").text("收起");
+            }
+            else {
+                tempmodel.isDeploy = 0;
+                $("#zk").text("展开");
+            }
+            //tempmodel.isDeploy == 0 ? 1 : 0;
+        },
+        inittemp: function (strId) {
+            
+                $.getJSON('/API/VIEWAPI.ashx?Action=WXGL_GETGROUPMODEL', { P1: tempmodel.groupcode}, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        tempmodel.modelData = resultData.Result;
+                    }
+                })           
+            
+        },//初始化
+        modelData: {"GroupCode":"", "GroupName": "", "Content": "", "CRUser": "", "CRDate": "", "IsDel": ""},
+        SaveData: function (callback) {
+
+            $.post("/API/VIEWAPI.ashx?ACTION=WXGL_ADDGROUP", { P1: JSON.stringify(tempmodel.modelData.$model)}, function (result) {
+                return callback.call(this, $.parseJSON(result));
+            });
+        },
+        Complate: function () {
+            window.location.href = "/WX/MyGroup.html?r=" + Math.random();
+        }
+    });//# sourceURL=MHYGL.js;
+
+</script>

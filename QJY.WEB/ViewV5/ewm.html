@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="”renderer”" content="”webkit|ie-comp|ie-stand”" />
+    <title>二维码</title>
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+</head>
+<body style="background-color: #F8F8F8; height: 100%;" ms-controller="EWM">
+    <div style="text-align:center; margin:0 auto;">
+        <div id="qrcode" style="margin:10px auto;"></div>
+        <div class="btn-print">
+            <p>
+                <br/>
+                <button class="btn btn-info btn-lg" id="medium" ms-on-click="GetEWM('medium')">小图</button>
+                <button class="btn btn-info btn-lg" id="large" ms-on-click="GetEWM('large')">大图</button>
+                <button class="btn btn-info btn-lg" ms-on-click="Print()">打印</button>
+            </p>
+        </div>
+    </div>
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/Utf.js"></script>
+    <script src="/ViewV5/JS/jquery.qrcode.min.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script type="text/javascript">
+        var model = avalon.define({
+            $id: "EWM",
+            GetEWM: function (size) {
+                var url = ComFunJS.getCookie('ewm_url');
+                var type = ComFunJS.getCookie('ewm_type');
+                var text = ComFunJS.getCookie('ewm_text');
+                $('#qrcode').html('');
+                ComFunJS.DrawQrcode("qrcode", url, text, size, type);
+            },
+            Print: function () {
+                $(".btn-print").hide();
+                window.print();   
+            }
+        });
+
+        avalon.ready(function () {
+            model.GetEWM('large');
+        })
+    </script>
+</body>
+</html>

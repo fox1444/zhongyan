@@ -1,0 +1,105 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>资产详情</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/animate.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
+    <style>
+    </style>
+</head>
+
+<body style="background-color: #F8F8F8; height: 100%;" ms-controller="ZCGLVIEW">
+    <div class="padding20">
+        <div class="card card3 mb20">
+            <div class="detail-nav">
+                <div class="tab-kh nav-bt">
+                    <span class="cur"><i class="iconfont icon-bookmark"></i>资产信息</span>
+                    <div class="pr20" style="float: right;">
+                        <button class="btn btn-info" ms-if="nowuser==modelData.CRUser" ms-click="Edit()">编辑</button>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-con">
+                <div class="detail-item" ms-repeat-el="ShowColumns" ms-class-1="{{el.class}}">
+                    <span class="item-tit">{{el.ColText}}</span>
+                    <div class="item-con ">{{ComFunJS.FnFormat(modelData[el.ColName],el.format)|html}}</div>
+                </div>
+                <div class="detail-item">
+                    <span class="item-tit">二维码</span>
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/Utf.js"></script>
+    <script src="/ViewV5/JS/jquery.qrcode.min.js"></script>
+    <script src="/ViewV5/JS/layer/layer.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/YSteps/Steps.js"></script>
+    <script type="text/javascript">
+
+        var model = avalon.define({
+            $id: "ZCGLVIEW",
+            modelData: {},
+            ShowColumns: [],
+            EWMcode: "",
+            strId: ComFunJS.getQueryString("ID"),
+            nowuser: ComFunJS.getnowuser(),
+            GetModelData: function () {
+                if (model.strId) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPI.ashx?Action=ZCGL_GETZCGLMODEL', { P1: model.strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.modelData = resultData.Result[0];
+
+                                var url = ComFunJS.yuming + "/WX/bgxt/zc_Detail.html?id=" + model.modelData.ID;
+                                ComFunJS.DrawQrcode("qrcode", url, model.modelData.Code, "icon", 'zm');
+                            }
+                        }
+                    })
+                }
+            },
+            Edit: function (ID) {
+                window.location.href = "/ViewV5/AppPage/APP_ADD_WF.html?FormCode=ZCGL&id=" + model.modelData.ID;
+            },
+
+        });
+
+        avalon.ready(function () {
+            model.ShowColumns.pushArray(
+                [
+                    { "ColName": "Code", "ColText": "资产编码", "IsSel": true },
+                    { "ColName": "Name", "ColText": "资产名称", "IsSel": true, "class": "width50" },
+                    { "ColName": "RegistDate", "ColText": "开始使用日期", "IsSel": true, "class": "width50", "format": "dateformat" },
+                    { "ColName": "Title", "ColText": "资产类型", "width": "10%", IsSel: true, "class": "width50" },
+                    { "ColName": "Status", "ColText": "使用状态", "IsSel": true, "class": "width50", "format": "zcstatus" },
+                    { "ColName": "Qty", "ColText": "数量", "IsSel": true, "class": "width50" },
+                    //{ "ColName": "DeptName", "ColText": "公司", "IsSel": true, "class": "width50" },
+                    { "ColName": "UserGW", "ColText": "部门", "IsSel": true, "class": "width50" },
+                    { "ColName": "UserRealName", "ColText": "使用人", "IsSel": true, "class": "width50" },
+                    { "ColName": "LocTitle", "ColText": "存放地点", "IsSel": true, "class": "width50" },
+                    { "ColName": "Tag", "ColText": "标签", "IsSel": true, "class": "width50" },
+                    { "ColName": "EPCode", "ColText": "EPC编码", "IsSel": true, "class": "width50" },
+                    { "ColName": "FactoryCode", "ColText": "出厂编码", "IsSel": true, "class": "width50" },
+                    { "ColName": "OrginalPrice", "ColText": "原值(元)", "IsSel": true, "class": "width50" },
+                    { "ColName": "PresentPrice", "ColText": "现值(元)", "IsSel": true, "class": "width50" },
+                    { "ColName": "Depreciation", "ColText": "折旧年限", "IsSel": true, "class": "width50" },
+                    { "ColName": "Managezhiwu", "ColText": "管理部门", "IsSel": true, "class": "width50" },
+                    { "ColName": "Comment", "ColText": "备注", "IsSel": true },
+                ]);
+            model.GetModelData();
+        })
+    </script>
+</body>
+</html>

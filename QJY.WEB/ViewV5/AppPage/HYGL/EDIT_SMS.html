@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>参会单位</title>
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/index.css">
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
+
+    <style>
+        .add-item {
+            margin-top: 10px;
+            clear: both;
+        }
+
+        i {
+            color: red;
+        }
+    </style>
+
+</head>
+<body ms-controller="DEPTSMS">
+    <div style="margin: 8px 80px;">
+        <div>
+            <div class="add-item  ">
+                <label class="add-item-label"><i>*</i>短信内容（会议短链接为：{{model.short_url}}）</label>
+                <div class="add-ic">
+                    <textarea class="form-control" id="content" ms-duplex="model.Content" style="height:120px;resize:none"></textarea>
+                </div>
+            </div>
+            <div class="add-item  ">
+                <label class="add-item-label">发送对象</label>
+                <div class="add-ic">
+                    <table class="table-con">
+                        <tr>
+                            <th>姓名</th>
+                            <th>手机号</th>
+                        </tr>
+                        <tr ms-repeat-el="USERData">
+                            <td>{{el.Name}}</td>
+                            <td>{{el.Mobphone}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/WFJS.js?ver=20171215"></script>
+    <script>
+        var model = avalon.define({
+            $id: "DEPTSMS",
+            DeptID: ComFunJS.getQueryString("DeptID", 0),
+            type: ComFunJS.getQueryString("type", 0),
+            HYGLID: window.parent.GetHYGLID(),
+            Content: "",
+            USERData: [],
+            short_url: "",
+            GetModelData: function () {
+                if (model.DeptID) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_GETOUTUSERLISTBYHYGLID', { P1: model.HYGLID, P2: model.type, DeptID: model.DeptID }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result.length > 0) {
+                                model.USERData = resultData.Result;
+                            }
+                        }
+                    })
+
+                    $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_GETHYSHORTURL', { P1: model.HYGLID }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            if (resultData.Result && resultData.Result != '') {
+                                model.short_url = resultData.Result;
+                            }
+                        }
+                    })
+                }
+            },
+        });
+
+        avalon.ready(function () {
+            model.GetModelData();
+        })
+
+        function getContent() {
+            return $('#content').val();
+        }
+    </script>
+</body>
+</html>

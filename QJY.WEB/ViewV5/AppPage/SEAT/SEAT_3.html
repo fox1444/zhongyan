@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>座次表</title>
+    <!-- Bootstrap -->
+    <link href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet">
+    <link href="/ViewV5/CSS/BootOver.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css" rel="stylesheet">
+    <link href="/ViewV5/JS/zTree_v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none; /*元素不能被选中*/
+        }
+
+        .lev1 {
+            /*//  margin-left: 10px;*/
+        }
+
+        .lev2 {
+            padding-left: 40px;
+        }
+
+        .list-group .lev2:first-child {
+            padding-left: 40px;
+            border-top: 1px solid #ddd !important;
+        }
+
+
+        .media-left {
+            padding-right: 5px;
+        }
+
+        .media-body {
+            padding-top: 5px;
+        }
+
+        .media-heading {
+            margin-top: 8px;
+        }
+
+        .list-group-item:hover {
+            background-color: #3085DB;
+        }
+
+
+        .isel {
+            top: 0;
+            right: 0;
+            color: darkgoldenrod;
+            font-size: 16px;
+        }
+
+        .pCard {
+            min-width: 100px;
+            max-width: 300px;
+            text-align: center;
+            margin: 5px 3px;
+        }
+
+        .pHead {
+            margin: 4px;
+            border-radius: 3px;
+            float: left;
+            height: 45px;
+            width: 45px;
+        }
+
+
+        .pName {
+            padding: 15px 0 0 0;
+            position: relative;
+            display: inline-block;
+            font-weight: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 14px;
+        }
+
+        .pCard:hover {
+            border-color: #66c9f3;
+            box-shadow: 0 0px 10px #66c9f3;
+            cursor: pointer;
+        }
+
+        .pWidthLength {
+            display: inline-block;
+            margin: 4px 3px;
+        }
+
+            .pWidthLength input {
+                padding-left: 3px;
+                padding-right: 3px;
+                width: 45px;
+                display: inline-block;
+            }
+
+        .pCardSelect {
+            border-color: #66c9f3;
+            box-shadow: 0 0px 10px #66c9f3;
+            cursor: pointer;
+        }
+
+        .pStatus {
+            color: #1288c5;
+            font-size: 12px;
+        }
+
+        .pCard:hover .badge {
+            visibility: visible;
+        }
+
+        .panel-body .badge {
+            position: absolute;
+            top: -5px;
+            right: -6px;
+            background-color: red;
+            padding-left: 5px;
+            padding-right: 5px;
+            visibility: collapse;
+        }
+
+        .panel-body .usersel {
+            position: absolute;
+            top: -5px;
+            right: -6px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .ztree * {
+            font-size: 15px;
+        }
+
+        .room-width-index {
+        }
+
+            .room-width-index li {
+                padding: 3px 5px;
+                margin: 0;
+            }
+
+        .room-length-index li {
+            border: solid 1px #ccc;
+            display: inline-block;
+            padding: 3px 0px;
+            margin-right: 4px;
+            line-height: 15px;
+            width: 37px;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .room-block-hold {
+            overflow: scroll;
+            width: 100%;
+            height: 490px;
+        }
+
+        .chairmen-wrapper {
+            position: relative;
+        }
+
+        .room-chairmen {
+            border: solid 1px #ccc;
+            margin: 3px 10px 3px 5px;
+            padding: 3px 10px 3px 10px;
+            line-height: 20px;
+            background: #ccc;
+            font-size: 120%;
+            width: 97%;
+            text-align: center;
+        }
+
+            .room-chairmen:after {
+                content: "主席台";
+                float: right;
+            }
+
+            .room-chairmen:before {
+                content: "主席台";
+                float: left;
+            }
+
+        .room-block {
+        }
+
+        .seat_info {
+            display: block;
+            height: 15px;
+            overflow: hidden;
+            font-size: 10px;
+        }
+
+        .navbar-fixed-bottom {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body ms-controller="UserSelect">
+    <div class="container-fluid " style="margin: 10px" id="dvContent">
+        <div style="width: 700px; position: absolute;">
+            <div class="room-block-hold">
+                <div class="chairmen-wrapper">
+                    <div class="room-chairmen">
+                        主席台
+                    </div>
+                </div>
+                <div class="room-block">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin:0 0 0 711px;">
+            <div class="formtitle" style="margin-bottom: 5px">
+                <span>参会人员</span>
+            </div>
+            <div class="panel-body" style="padding: 0; height: 450px; overflow: auto; overflow-y:scroll;">
+                <div ms-repeat-seluser="SelUsers" style=" min-width: 80px">
+                    <div class="dept-title" style="display:none;">
+                        {{seluser.ODName}}
+                    </div>
+                    <div class="pCard">
+                        <div class="pName" style="padding-top: 5px" ms-title="{{seluser.ODName+'-'+seluser.Zhiwu+'-'+seluser.Name}}">
+                            {{seluser.Name}}
+                        </div>
+                        <input class="pDept" type="hidden" ms-duplex="seluser.OutDeptName" />
+                    </div>
+                    <div class="pWidthLength">
+                        <input class="form-control length-val" type="text" />-<input class="form-control width-val" type="text" />
+                        <input class="" type="hidden" ms-duplex="seluser.ID" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar-fixed-bottom" style="background-color: #F8F8F8; width: 100%;">
+        <div class="text-center">
+            <div class="input-group" style="height: 40px">
+                <span class="input-group-btn">
+                    <button class="btn btn-danger btnqx" ms-click="quxiao()" style="width: 120px; height: 40px;">取消</button>
+                    <button class="btn btn-success btnSucc" style="width: 120px; height: 40px; margin-left: 2px;" ms-click="SaveData(this,false)"><i class="fa fa-spinner fa-spin" style="display: none"></i>提交信息</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/web/js/layer/layer.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20171215"></script>
+    <script src="/ViewV5/JS/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
+    <script src="/ViewV5/JS/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
+
+    <script>
+        var model = avalon.define({
+            $id: "UserSelect",
+            HyId: ComFunJS.getQueryString("id"),
+            SelUsers: [],//已选择用户
+            render: function () {
+            },
+            inittemp: function () {
+                //编辑加载数据
+                $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_GETHYGLMODEL', { P1: model.HyId }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        model.modelData = resultData.Result[0];
+                        model.getUserTree();
+                    }
+                })
+            },
+            getUserTree: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_GETOUTUSERLISTBYHYGLID', { P1: model.HyId, P2: 1 }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        model.SelUsers = resultData.Result;
+                        model.LoadRoom();
+                        model.InputBlur();
+                    }
+                })
+            },
+            LoadRoom: function () {
+                if (model.modelData.RoomWidth && model.modelData.RoomLength) {
+                    var rw = parseInt(model.modelData.RoomWidth);
+                    var rl = parseInt(model.modelData.RoomLength);
+                    var tmp = '';
+                    tmp += '<ul class="room-width-index">';
+                    for (let l = 1; l <= rl; l++) {
+
+                        tmp += '<li>';
+                        tmp += '<ul class="room-length-index">';
+                        for (let w = 1; w <= rw; w++) {
+                            tmp += '<li class="seat_' + l + '_' + w + '"  >';
+                            tmp += '<span>' + l + '-' + w + '</span>';
+                            tmp += '<span class="seat_info "></span>';
+                            tmp += '<span class="seat_info_userid" style="display:none"></span>';
+                            tmp += '</li>';
+
+                        }
+                        tmp += '</ul>';
+                        tmp += '</li>';
+
+                    }
+                    tmp += '</ul>';
+                    $('.room-block').html(tmp);
+                    var wpx = (model.modelData.RoomWidth * 42) + 'px';
+                    $('.room-block').css('width', wpx);
+                    $('.chairmen-wrapper').css('width', wpx);
+                    model.LoadSelectZcb();
+                }
+            },
+            LoadSelectZcb: function () {
+                if (model.modelData.ZCB.trim() != "") {
+                    var holdseats = JSON.parse(model.modelData.ZCB);
+                    holdseats.forEach(function (v, i) {
+                        $(".pWidthLength").each(function (index, obj) {
+                            var _sid = $(obj).children("input").eq(2).val();
+                            if (v.userid == _sid) {
+                                $(obj).children("input").eq(0).val(v.xcode);
+                                $(obj).children("input").eq(1).val(v.ycode);
+                                return;
+                            }
+                        })
+                    });
+                    model.ReBindInputData();
+                }
+            }, //同时绑定输入框
+            widthRecord: "",
+            lengthRecord: "",
+            InputBlur: function () {
+                $('.pWidthLength input').on({
+                    focus: function () {
+                        model.lengthRecord = $(this).parent().children("input").eq(0).val();
+                        model.widthRecord = $(this).parent().children("input").eq(1).val();
+                        $('.seat_' + model.lengthRecord + '_' + model.widthRecord).css('background', 'blue').css('color', '#fff');
+                    },
+                    blur: function () {
+                        model.BindInputData(this);
+                    }
+                });
+                model.LoadDeptitle();
+            },
+            BindInputData: function (obj) {
+                var sel_name = $(obj).parent().parent().children(".pCard").children(".pName").html();
+                var length_p = $(obj).parent().children("input").eq(0).val();
+                var width_p = $(obj).parent().children("input").eq(1).val();
+                var sel_id = $(obj).parent().children("input").eq(2).val();
+
+                if (length_p != '' && width_p != '') {
+                    var currentseat = $('.seat_' + length_p + '_' + width_p).children('span').eq(1);
+                    if (currentseat.length > 0) {
+                        var currentseatid = currentseat.parent().children("span").eq(2).html();
+
+                        //座位有人的判断
+                        if (currentseatid != '' && currentseatid != sel_id) {
+                            alert("该座位上已经有人");
+                            $(obj).val('');
+                            $(obj).parent().children("input").eq(0).val(model.lengthRecord);
+                            $(obj).parent().children("input").eq(1).val(model.widthRecord);
+                            return;
+                        }
+                        //$('.seat_' + length_p + '_' + width_p).css("background", "pink");
+                        //currentseat.html(sel_name);
+
+                        //重新加载所有座位
+                        model.ReBindInputData();
+                    }
+                    else {
+                        //没有该座位"
+                        $(obj).val('');
+                        $(obj).parent().children("input").eq(0).val(model.lengthRecord);
+                        $(obj).parent().children("input").eq(1).val(model.widthRecord);
+                    }
+                }
+                else {
+                    //输入不完整时
+                    model.ReBindInputData();
+                }
+            },
+            ReBindInputData: function () {
+                //清除之前的座位
+                $('.seat_info').each(function (index, obj) {
+                    $(obj).html('');
+                    $(obj).parent().children("span").eq(2).html('');
+                    $(obj).parent().css("background", "").css('color', '#333');
+                });
+                $(".pWidthLength").each(function (index, obj) {
+
+                    var _lp = $(obj).children("input").eq(0).val();
+                    var _wp = $(obj).children("input").eq(1).val();
+                    var _sid = $(obj).children("input").eq(2).val();
+                    var _sname = $(obj).parent().children(".pCard").children(".pName").html();
+
+                    var _cs = $('.seat_' + _lp + '_' + _wp).children('span').eq(1);
+                    var _csid = $('.seat_' + _lp + '_' + _wp).children('span').eq(2);
+                    if (_cs.length > 0) {
+                        _cs.html(_sname);
+                        _csid.html(_sid);
+                        $('.seat_' + _lp + '_' + _wp).css("background", "pink").css('color', '#333');
+                    }
+                });
+            },
+            quxiao: function () {
+                parent.layer.closeAll();
+            },
+            SaveData: function (callback) {
+                $.post("/API/VIEWAPI.ashx?ACTION=HYGL_UPDATEHYGLZCB", { P1: JSON.stringify(model.modelData.$model), P2: JSON.stringify(getZCB()) }, function (result) {
+                    //return callback.call(this, result);
+                    if (result.ErrorMsg == "") {
+                        top.ComFunJS.winsuccess("操作成功！！");
+                    }
+                    else {
+                        top.ComFunJS.winwarning("操作失败！！");
+                    }
+                });
+            },
+            modelData: { "ID": "", "Title": "", "Details": "", "StartTime": "", "EndTime": "", "RoomID": "", "RoomWidth": "", "RoomLength": "", "TXSJ": "-1", "FQUser": ComFunJS.getnowuser(), "CYUser": "", "JLUser": "", "Files": "", "ZCUser": "", "SXUser": "", "HYFW": "", "HYXZ": "", "ZCB": "" },
+            LoadDeptitle: function() {
+                var title = "";
+                var d = false;
+                $('.dept-title').each(function () {
+                    var current = $(this).html();
+                    if (current != title)
+                        $(this).show();
+                    title = current;
+                });
+            }
+        });
+
+        function getZCB() {
+            var zcb = [];
+            $(".pWidthLength").each(function (index, obj) {
+
+                var _lp = $(obj).children("input").eq(0).val();
+                var _wp = $(obj).children("input").eq(1).val();
+                var _sid = $(obj).children("input").eq(2).val();
+                var _sname = $(obj).parent().children(".pCard").children(".pName").html();
+                var _sdept = $(obj).parent().children(".pCard").children(".pDept").val();
+
+                if (_lp.length > 0 && _wp.length > 0) {
+                    var elezcb = { 'userid': _sid, 'userrealname': _sname, 'xcode': _lp, 'ycode': _wp, 'DeptName': _sdept, };
+                    zcb.push(elezcb);
+                }
+            });
+            return zcb;
+
+        }
+
+        avalon.ready(function () {
+            model.inittemp();
+        });
+    </script>
+</body>
+</html>

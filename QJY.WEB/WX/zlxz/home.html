@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>小组之家</title>
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css?ver=20171228" rel="stylesheet" />
+    <link rel="stylesheet" href="/View_Mobile/css/sm.min.css">
+    <link rel="stylesheet" href="/WX/CSS/wxstyle.css">
+    <style>
+        .content {
+            padding-bottom: 2rem;
+        }
+
+        .list-group-title {
+            position: fixed !important;
+            top: 0;
+            width: 100%;
+        }
+
+        .list-group ul {
+            margin-top: 2rem;
+        }
+        .item-inner {
+            border-bottom: solid 1px #ccc;
+        }
+        .chartbox::after {
+            content: "\e96d";
+            display: block;
+            font-family: icomoon;
+            float: right;
+            font-size: 1rem;
+            line-height: 1.2rem;
+        }
+    </style>
+</head>
+<body ms-controller="Home">
+    <div class="page page-current " id="pageindex1">
+        <div class="content native-scroll">
+            <div class="list-block contacts-block" style="margin:0px;" ms-if="model.jianduGroups.length>0">
+                <div class="list-group">
+                    <div class="item-content" ms-repeat-el="jianduGroups">
+                        <div class="item-inner">
+                            <div class="item-title" ms-click="gogroup(el.XiaoZu)">{{el.XiaoZu}}</div>
+                            <div class="img-icon">
+                                <span class="chartbox" ms-click="gochart(el.XiaoZu)"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-block contacts-block" style="margin:0px;" ms-if="model.xzName!=''">
+                <div class="list-group">
+                    <div class="list-group-title">{{model.xzName}}<span class="chartbox" ms-click="gochart(model.xzName)"></span></div>
+                    <ul>
+                        <li ms-repeat-el="xzList">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                        {{el.UserRealName}}
+                                        <div class="light">
+                                            <span><a ms-attr-href="tel:{{el.mobphone}}" external><i class="fa  fa-mobile-phone"></i>{{el.mobphone}}</a></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="" ms-if="el.UserGW">
+                                            {{el.zhiwu}}
+                                        </span>
+                                        <!--<span class="" ms-if="el.IsZuZhang">
+                                            组长
+                                        </span>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <footer class="footer-nav-group">
+            <ul>
+                <li>
+                    <div ms-on-click="showsubpage(this)">
+                        政策法规
+                        <ul class="sub-nav">
+                            <li ms-on-click="gopage('/View_Mobile/UI/UI_XXFB_LIST.html?id=612&name=法律&r='+ Math.random())">
+                                法律
+                            </li>
+                            <li ms-on-click="gopage('/View_Mobile/UI/UI_XXFB_LIST.html?id=613&name=营销&r='+ Math.random())">
+                                营销
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div ms-on-click="gopage('/wx/zlxz/newproduct.html?id=614&name=新品&r='+ Math.random())" ms-on-blur="onblur(this)">
+                        新品推荐
+                    </div>
+                </li>
+                <li>
+                    <div ms-on-click="showsubpage(this)" ms-on-blur="onblur(this)">
+                        小组之家
+                        <ul class="sub-nav">
+                            <li ms-on-click="gopage('/WX/zlxz/home.html')">
+                                会议室
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/Ry_list.html?r='+ Math.random())">
+                                荣誉室
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/hd_list.html?r='+ Math.random())">
+                                活动室
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/Satisfaction.html?r='+ Math.random())">
+                                满意度调查
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/Calculation.html?r='+ Math.random())">
+                                紧俏烟计算器
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </footer>
+    </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/avalon.min.js"></script>
+    <script src="/wx/JS/WxControl.js"></script>
+    <script>
+        var model = avalon.define({
+            $id: "Home",
+            userData: {},
+            jianduGroups: { "XiaoZu": "" },
+            xzList: [],
+            xzName: "",
+            gogroup: function (g) {
+                window.location = "/WX/zlxz/group_member.html?g=" + g + "&r=" + Math.random();
+            },
+            gochart: function (g) {
+                window.location = "/WX/Message/zlxzbox.html?g=" + g + "&r=" + Math.random();
+            },
+            inittemp: function () {
+                //var pn = ComFunJS.getCookie("szhlcode");
+                //alert(pn);
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETUSERINFO&r=" + Math.random(), {}, function (r) {
+                    if (r.ErrorMsg == "") {
+                        model.userData = r.Result;
+                    }
+                })
+
+                $.getJSON("/API/VIEWAPI.ashx?Action=WXGL_GETMYJIANDUGROUPTEAM&r=" + Math.random(), {}, function (r) {
+                    model.loading = false;
+                    if (r.ErrorMsg == "") {
+                        model.jianduGroups = r.Result;
+                    }
+                })
+
+                $.getJSON("/API/VIEWAPI.ashx?Action=WXGL_GETMYGROUPTEAM&r=" + Math.random(), {}, function (r) {
+                    model.loading = false;
+                    if (r.ErrorMsg == "") {
+                        model.xzList.pushArray(r.Result);
+                        model.xzName = r.Result1;
+                        //判断是否加载完毕
+                        //if (r.Result.length < model.pagecount) {
+                        //    // 加载完毕，则注销无限加载事件，以防不必要的加载
+                        //    $.detachInfiniteScroll($('.infinite-scroll'));
+                        //    // 删除加载提示符
+                        //    $('.infinite-scroll-preloader').remove();
+                        //    return;
+                        //}
+
+                        //$.refreshScroller();
+                        //model.page += 1;
+                    }
+                })
+            },
+            showsubpage: function (t) {
+
+                if ($(t).children(".sub-nav").css("display") == "block") {
+                    $(".sub-nav").hide();
+                }
+                else {
+                    $(".sub-nav").hide();
+                    $(t).children(".sub-nav").show();
+                }
+            },
+            gopage: function (url) {
+                if (url)
+                    window.location.href = url;
+            },
+            onblur: function (t) {
+                $(t).hide();
+            },
+        })
+
+        avalon.ready(function () {
+            model.inittemp();
+        })
+
+        window.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+                window.location.reload()
+            }
+        })
+    </script>
+</body>
+</html>

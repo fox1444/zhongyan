@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>新品推荐</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css?ver=20171228" rel="stylesheet" />
+    <link rel="stylesheet" href="/View_Mobile/css/sm.min.css">
+    <link rel="stylesheet" href="/WX/CSS/wxstyle.css">
+    <style type="text/css">
+        .content {
+            padding-bottom: 2rem;
+        }
+        .img-icon{
+            width:3rem;
+            text-align:center;
+        }
+        .img-icon img {
+            border-radius: 0;
+            max-height: 3rem;
+            width: auto;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body ms-controller="XXList">
+    <div class="page page-current" id="pageindex1">
+        <header class="bar bar-nav" ms-if="Name">
+            <a class="button button-link button-nav pull-left back">
+                <span class="icon icon-left"></span>
+            </a>
+            <h1 class="title">{{Name}}</h1>
+        </header>
+        <div class="page page-current " id="pageindex1">
+            <div class="content native-scroll">
+                <div class="list-block contacts-block" style="margin:0px;" ms-if="ctData.size() == 0">
+                    <div class="list-group">
+                        <ul>                 
+                            <li ms-repeat-el="xxList">
+                                <div class="item-content" ms-click="viewwxx(el.Item[0])">
+                                    <div class="item-inner">
+                                        <div class="item-title">{{el.XXTitle}}</div>
+                                        <div class="img-icon">
+                                            <div ms-repeat-item="el.Item">
+                                                <div valign="bottom" class="card-header color-white no-border no-padding" ms-on-tap="viewwxx(item)" ms-if="$index==0">
+                                                    <img  ms-if="item.ImageIds!=''" ms-attr-src="{{ComFunJS.getfile(item.ImageIds?item.ImageIds.split(',')[0]:'')}}" alt="" />
+                                                    <span class="ititle" ms-if="el.Item.size()!=1">{{el.XXTitle}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer-nav-group">
+            <ul>
+                <li>
+                    <div ms-on-click="showsubpage(this)" ms-on-blur="onblur(this)">
+                        政策法规
+                        <ul class="sub-nav">
+                            <li ms-on-click="gopage('/View_Mobile/UI/UI_XXFB_LIST.html?id=612&name=法律&r='+ Math.random())">
+                                法律
+                            </li>
+                            <li ms-on-click="gopage('/View_Mobile/UI/UI_XXFB_LIST.html?id=613&name=营销&r='+ Math.random())">
+                                营销
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div ms-on-click="gopage('/wx/zlxz/newproduct.html?id=614&name=新品&r='+ Math.random())">
+                        新品推荐
+                    </div>
+                </li>
+                <li>
+                    <div ms-on-click="showsubpage(this)" ms-on-blur="onblur(this)">
+                        小组之家
+                        <ul class="sub-nav">
+                            <li ms-on-click="gopage('/WX/zlxz/home.html')">
+                                会议室
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/Ry_list.html?r='+ Math.random())">
+                                荣誉室
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/hd_list.html?r='+ Math.random())">
+                                活动室
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/Satisfaction.html?r='+ Math.random())">
+                                满意度调查
+                            </li>
+                            <li ms-on-click="gopage('/WX/zlxz/Calculation.html?r='+ Math.random())">
+                                紧俏烟计算器
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </footer>
+    </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm-extend.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/avalon.min.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/wx/JS/WxControl.js"></script>
+    <script>
+
+
+        var strId = ComFunJS.getQueryString("id");
+        if (!strId) { strId = "0" }
+        var model = avalon.define({
+            $id: "XXList",
+            ctData: [],
+            xxList: [],
+            loading: false,
+            page: 1,
+            pagecount: 8,
+            Name: ComFunJS.getQueryString("name"),
+            vieww: function (el) {
+                window.location = "zlxz/NewProduct.html?id=" + el.Id + "&name=" + el.name + "&r=" + Math.random();
+            },
+            viewwxx: function (el) {
+                window.location = "/View_Mobile/UI/UI_XXFB_INFO.html?id=" + el.ID + "&r=" + Math.random();
+            },
+            GetModelList: function () {
+                if (model.loading) return;
+                model.loading = true;
+                $.getJSON("/API/VIEWAPI.ashx?Action=XXFB_GETXXFBLISTWX&r=" + Math.random(), { "p": model.page, "P2": strId }, function (r) {
+                    model.loading = false;
+                    if (r.ErrorMsg == "") {
+                        model.xxList.pushArray(r.Result);
+                        //判断是否加载完毕
+                        model.page += 1;
+                    }
+                })
+            },
+            UpStatus: function (el, type) {
+                var msg = "退回";
+                var urlapi = "/API/VIEWAPI.ashx?ACTION=XXFB_SHXXFB&r=" + Math.random();
+                if (type == "1") {
+                    msg = "同意";
+                } else if (type == "-1") {
+                    msg = "退回";
+                } else if (type == "2") {
+                    msg = "发布";
+                    urlapi = "/API/VIEWAPI.ashx?ACTION=XXFB_SUREXXFB&r=" + Math.random();
+                }
+                ComFunJS.showSH("200", msg, function (nr) {
+                    $.post(urlapi, { P1: el.ID, P2: type, jy: nr }, function (result) {
+                        var result = $.parseJSON(result)
+                        if ($.trim(result.ErrorMsg) == "") {
+                            $.toast("已" + msg);
+                            el.SHStatus = type;
+                        }
+                        else {
+                            $.toast("操作失败");
+                        }
+                    });
+                })
+
+            },
+            showsubpage: function (t) {
+
+                if ($(t).children(".sub-nav").css("display") == "block") {
+                    $(".sub-nav").hide();
+                }
+                else {
+                    $(".sub-nav").hide();
+                    $(t).children(".sub-nav").show();
+                }
+            },
+            gopage: function (url) {
+                if (url)
+                    window.location.href = url;
+            },
+            onblur: function (t) {
+                $(t).hide();
+            },
+        })
+
+        avalon.ready(function () {
+            $.post("/API/VIEWAPI.ashx?Action=XXFB_GETXXFBTYPELISTWX&r=" + Math.random(), { P1: strId }, function (data) {
+                var data = $.parseJSON(data);
+                if (data.ErrorMsg == "") {
+                    model.ctData = data.Result;
+                    if (model.ctData.size() == 0) {
+                        // 注册'infinite'事件处理函数
+                        $(document).on('infinite', '.infinite-scroll-bottom', function () {
+                            model.GetModelList();
+                        });
+
+                        $.init();
+                        model.GetModelList();
+                    }
+                }
+            })
+        })
+
+        function read(str) {
+            if (str) {
+                return str.split(',').length
+            }
+            else {
+                return 0;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>会议详情</title>
+    <Script language="javascript">
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                var id = "";
+                var tpl = "";
+                for (var i = 0; i < strs.length; i++) {
+                    var name = strs[i].split("=")[0].toLowerCase();
+                    if (name == "id") {
+                        id = strs[i].split("=")[1];
+                    }
+                    if (name == "tpl") {
+                        tpl = strs[i].split("=")[1];
+                    }
+                }
+
+                window.location = "/View_Mobile/UI/HyDetail_index" + tpl + ".html?id=" + id + "&r=" + Math.random();
+            }
+        }
+
+    </Script>
+
+</head>
+<body onload="javascript:GetRequest()">
+
+</body>
+</html>

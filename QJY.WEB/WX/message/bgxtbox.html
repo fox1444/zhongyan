@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>会议室</title>
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css?ver=20171228" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/fs_gallery.css" rel="stylesheet" />
+    <link href="/WX/CSS/wxstyle.css" rel="stylesheet" />
+    <script src="/View_Mobile/JS/zepto.min.js"></script>
+    <script src="/View_Mobile/Frozenui1.3/js/frozen.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160427"></script>
+    <script src="/View_Mobile/JS/watermark.js"></script>
+    <script src="/View_Mobile/JS/fs_gallery.js"></script>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script src="/WX/JS/chart.js"></script>
+
+    <style>
+        body html {
+            background-color: #111 !important;
+        }
+        .group-title {
+            position: fixed;
+            top: 0;
+            height: 30px;
+            line-height: 30px;
+            padding: 6px 16px;
+            font-size: 16px;
+            background: #fff;
+            color:#777;
+            width: 100%;
+            border-bottom: solid 1px #bbb;
+        }
+
+        .msg-box {
+            width: 95%;
+            margin: 40px 0 0 0;
+            overflow-y: scroll;
+            padding: 0 10px;
+            background: #ddd;
+        }
+
+        .message-item .title {
+            color: #444;
+            font-size: 12px !important;
+            margin-bottom: 8px;
+            margin-left:4px;
+            font-weight: bold;
+        }
+
+        .message-item .date {
+            color: #444;
+            font-size: 11px !important;
+            padding: 8px;
+            text-align: center
+        }
+
+        .message-item .msg {
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            font-size: 15px;
+            width: 85%;
+        }
+
+        .ui-footer {
+            height: auto;
+            font-size: 16px !important;
+        }
+        .chartbox::after {
+            content: "\e972";
+            display: block;
+            font-family: icomoon;
+            float: right;
+            margin: 2px 30px 0 0;
+            font-size: 25px;
+            line-height: 25px;
+        }
+    </style>
+</head>
+<body id="activity-detail" ms-controller="message">
+    <div class="page page-current " id="pageindex1">
+        <div class="list-group">
+            <h3 class="group-title">{{messagemodel.groupname}}<span class="chartbox" ms-click="gohome()"></span></h3>
+            <div class="msg-box" style="">
+                <div id="message-content">
+                    <div class="message-item" ms-repeat-el="modelData">
+                        <div class="date">{{el.CRDate|date("yy-MM-dd HH:mm")}}</div>
+                        <div class="title">
+                            {{el.CRUserRealName}}
+                        </div>
+                        <div class="msg">
+                            {{el.Content}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-footer ui-footer-stable ui-btn-group ui-border-t" style=" z-index: 10000;">
+            <section class="ui-input-wrap ui-border-t" style="width: 100%">
+                <div class="ui-input ui-border-radius">
+                    <input id="my-msg" type="text" name="" value="" placeholder="我也说一句...">
+                </div>
+                <button class="ui-btn">发送</button>
+            </section>
+        </div>
+    </div>
+    <script>
+        var g = ComFunJS.getQueryString('g');//小组名
+        var messagemodel = avalon.define({
+            $id: "message",
+            groupname: g,
+            modelData: { "Content": "", "GroupName": "", "CRUser": "", "CRUserRealName": "", "CRDate": "" },
+            inittemp: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=WXGL_GETMESSAGEHISTORY&r=' + Math.random(), { P1: g }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        messagemodel.modelData = resultData.Result;
+                        setTimeout(messagemodel.SetRecordHeight(), 300);
+                        setTimeout(messagemodel.ScropBottom(), 1000);
+                    }
+                })
+
+                //ajax_method('/API/VIEWAPI.ashx?Action=WXGL_GETMESSAGEHISTORY&r=' + Math.random(), '', 'get', function (resultData) {
+                //    alert(resultData);
+                //})
+            },
+            SetRecordHeight: function () {
+                $(".msg-box").height($(window).height() - 60);
+            },
+            ScropBottom: function () {
+                $('.msg-box').scrollTop($('.msg-box')[0].scrollHeight);
+            },
+            gohome: function () {
+                window.location = '/WX/bgxt/index.html?r=' + Math.random();
+            }
+        })
+
+        avalon.ready(function () {
+            messagemodel.inittemp();
+
+            $(".ui-btn").click(function () {
+                if ($("#my-msg").val() == null || $("#my-msg").val() == "") {
+                    $.tips({
+                        content: "请输入内容",
+                        stayTime: 2000,
+                        type: "warn"
+                    })
+                    return;
+                }
+
+                $.getJSON('/API/VIEWAPI.ashx?Action=WXGL_INSERTMESSAGE&r=' + Math.random(), { P1: $('#my-msg').val(), P2: g }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        messagemodel.modelData.pushArray(resultData.Result);
+                        $("#my-msg").val("");
+                        messagemodel.inittemp();
+                    }
+                })
+            })
+        })
+
+        function ajax_method(url, data, method, success) {
+            // 异步对象
+            var ajax = new XMLHttpRequest();
+
+            // get 跟post  需要分别写不同的代码
+            if (method == 'get') {
+                // get请求
+                if (data) {
+                    // 如果有值
+                    url += '?';
+                    url += data;
+                } else {
+
+                }
+                // 设置 方法 以及 url
+                ajax.open(method, url);
+
+                // send即可
+                ajax.send();
+            } else {
+                // post请求
+                // post请求 url 是不需要改变
+                ajax.open(method, url);
+
+                // 需要设置请求报文
+                ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                // 判断data send发送数据
+                if (data) {
+                    // 如果有值 从send发送
+                    ajax.send(data);
+                } else {
+                    // 木有值 直接发送即可
+                    ajax.send();
+                }
+            }
+
+            // 注册事件
+            ajax.onreadystatechange = function () {
+                // 在事件中 获取数据 并修改界面显示
+                if (ajax.readyState == 4 && ajax.status == 200) {
+                    // console.log(ajax.responseText);
+
+                    // 将 数据 让 外面可以使用
+                    // return ajax.responseText;
+
+                    // 当 onreadystatechange 调用时 说明 数据回来了
+                    // ajax.responseText;
+
+                    // 如果说 外面可以传入一个 function 作为参数 success
+                    success(ajax.responseText);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1057 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>会议详情</title>
+    <link href="/View_Mobile/js/layer/need/layer.css" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/add.css?ver=2" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/szhlextend.css?ver=20160904" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/tobaccoHtml.css" rel="stylesheet" />
+    <link href="/View_Mobile/JS/Date/FT_Date.min.css" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/video-js.css" rel="stylesheet" />
+</head>
+<body ms-controller="Hydetail" class="">
+    <div class="index-html" style="display:none;">
+    </div>
+    <div class="wrapper">
+        <div class="hy_menu bg-white" id="item-1" style="padding:0;">
+            <div class="banner">
+                {{modelData.Title|html}}
+            </div>
+            <div class="content-bg">
+                <div class="hy_menu_list">
+                    <a href="#" ms-on-click="getdata(2)" class="button external" ms-class-1="tab-link:modelData.CXQK!=''||modelData.BoardingTime!=''||modelData.CarNumber!=''||currentuser.BoardingTime!=''||currentuser.CarNumber!=''" ms-if="modelData.CXQK!=''||modelData.BoardingTime!=''||modelData.CarNumber!=''||currentuser.BoardingTime!=''||currentuser.CarNumber!=''">
+                        <img src="/View_Mobile/Images/icon/YCGL.png">
+                        <span>
+                            出行安排
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(3)" class="button external" ms-class-1="tab-link:modelData.ZSAP!=''||modelData.HotelName!=''||currentuser.HotelName!=''||currentuser.RoomNumber!=''" ms-if="modelData.ZSAP!=''||modelData.HotelName!=''||currentuser.HotelName!=''||currentuser.RoomNumber!=''">
+                        <img src="/View_Mobile/Images/icon/Info.jpg">
+                        <span>
+                            住宿安排
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(4)" class="tab-link button external">
+                        <img src="/View_Mobile/Images/icon/HYGL.png">
+                        <span>
+                            座位引导
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(5)" class="button external" ms-class-1="tab-link:modelData.Summary!=''" ms-if="modelData.Summary!=''">
+                        <img src="/View_Mobile/Images/icon/GZRB.png">
+                        <span>
+                            {{modelData.SummarySubTitle}}
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(6)" class="button external" ms-class-1="tab-link:modelData.Comment!=''" ms-if="modelData.Comment!=''">
+                        <img src="/View_Mobile/Images/icon/PXGL.png">
+                        <span>
+                            {{modelData.CommentSubTitle}}
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(7)" class="button external" ms-class-1="tab-link:modelData.HYXZ!=''" ms-if="modelData.HYXZ!=''">
+                        <img src="/View_Mobile/Images/icon/ZHBG.jpg">
+                        <span>
+                            会议须知
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(8)" class="button external" ms-class-1="tab-link:modelData.Security!=''" ms-if="modelData.Security!=''">
+                        <img src="/View_Mobile/Images/icon/SECURITY.jpg">
+                        <span>
+                            应急预案
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(9)" class="button external" ms-class-1="tab-link:modelData.HYFW!=''" ms-if="modelData.HYFW!=''">
+                        <img src="/View_Mobile/Images/icon/WQQD.png">
+                        <span>
+                            服务指南
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(10)" class="button external" ms-class-1="tab-link:modelData.Details!=''" ms-if="modelData.Details!=''">
+                        <img src="/View_Mobile/Images/icon/NOTE.png">
+                        <span>
+                            日程安排
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(11)" class="button external" ms-class-1="tab-link:modelData.YCTIME!=''||modelData.YCLOCATION!=''||currentuser.YCTIME!=''||currentuser.YCLOCATION!=''" ms-if="modelData.YCTIME!=''||modelData.YCLOCATION!=''||currentuser.YCTIME!=''||currentuser.YCLOCATION!=''">
+                        <img src="/View_Mobile/Images/icon/DCGL.png">
+                        <span>
+                            用餐安排
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(12)" class="tab-link button external">
+                        <img src="/View_Mobile/Images/icon/QYIM.png">
+                        <span>
+                            参会代表
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(13)" class="button external" ms-class-1="tab-link:modelData.Organization!=''" ms-if="modelData.Organization!=''">
+                        <img src="/View_Mobile/Images/icon/XMGL.png">
+                        <span>
+                            会务机构
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(14)" class="button external" ms-class-1="tab-link:modelData.Files!=''" ms-if="modelData.Files!=''">
+                        <img src="/View_Mobile/Images/icon/KSGL.png">
+                        <span>
+                            资料下载
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(15)" class="tab-link button external">
+                        <img src="/View_Mobile/Images/icon/JSFW.png">
+                        <span>
+                            接送服务
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(16)" class="button external" ms-class-1="tab-link:modelData.LocationImg !='' || (modelData.LbsRegion != '' && modelData.LbsLocation != '') || (modelData.HotelRegion!='' && (modelData.HotelName != '' || currentuser.HotelName != ''))" ms-if="(modelData.LbsRegion != '' && modelData.LbsLocation != '') || (modelData.HotelRegion!='' && (modelData.HotelName != '' || currentuser.HotelName != ''))">
+                        <img src="/View_Mobile/Images/icon/map.png" style="border-radius: 10px;">
+                        <span>
+                            地图导航
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="getdata(17)" class="tab-link button external">
+                        <img src="/View_Mobile/Images/icon/video1.png" style="border-radius: 2px;">
+                        <span>
+                            影像纪实
+                        </span>
+                    </a>
+                    <a href="#" ms-on-click="gostart()" class="tab-link button external">
+                        <img src="/View_Mobile/Images/icon/XXFB.png">
+                        <span>
+                            会议公告
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!--出行安排-->
+        <div class="hy_menu bg-white bg-grey hychuxing" id="item-2" ms-if="modelData.CXQK!=''||modelData.BoardingTime!=''||modelData.CarNumber!=''||currentuser.BoardingTime!=''||currentuser.CarNumber!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>出行安排
+                </div>
+                <div class="item-description">
+                    <div class="inlist" ms-if="modelData.CarNumber!=''||currentuser.CarNumber!=''">
+                        <span class="parent_title">
+                            乘坐车辆
+                        </span>
+                        <div class="item-con ">
+                            <div ms-if="currentuser.CarNumber!=''">
+                                {{tempmodel.FormatHTML(currentuser.CarNumber)|html}}
+                            </div>
+                            <div ms-if="currentuser.CarNumber==''">
+                                {{modelData.CarNumber|html}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inlist" ms-if="modelData.CXQK!=''">
+                        <span class="parent_title">
+                            出行安排
+                        </span>
+                        <div class="item-con ">
+                            {{modelData.CXQK|html}}
+                        </div>
+                    </div>
+                    <div class="inlist" ms-if="modelData.BoardingTime!=''||currentuser.BoardingTime!=''">
+                        <span class="parent_title">
+                            上车时间
+                        </span>
+                        <div class="item-con ">
+                            <div ms-if="currentuser.BoardingTime!=''">
+                                {{tempmodel.FormatHTML(currentuser.BoardingTime)|html}}
+                            </div>
+                            <div ms-if="currentuser.BoardingTime==''">
+                                {{modelData.BoardingTime|html}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--住宿安排-->
+        <div class="hy_menu bg-white bg-grey hyzhusu" id="item-3" ms-if="modelData.ZSAP!=''||modelData.HotelName!=''||currentuser.HotelName!=''||currentuser.RoomNumber!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>住宿安排
+                </div>
+                <div class="item-description">
+                    <div class="inlist" ms-if="modelData.ZSAP!=''">
+                        <span class="parent_title ">
+                            住宿服务
+                        </span>
+                        <div class="item-con ">
+                            {{tempmodel.FormatHTML(modelData.ZSAP)|html}}
+                        </div>
+                    </div>
+                    <div class="inlist" ms-if="modelData.HotelName!=''||currentuser.HotelName!=''">
+                        <span class="parent_title">
+                            酒店
+                        </span>
+                        <div class="item-con" ms-if="currentuser.HotelName!=''">
+                            <p>名称：{{modelData.HotelRegion|html}}{{currentuser.HotelName|html}}</p>
+                            <p ms-if="currentuser.HotelLocation!=''">地址：{{currentuser.HotelLocation|html}}</p>
+                        </div>
+                        <div class="item-con" ms-if="currentuser.HotelName==''">
+                            <p>名称：{{modelData.HotelRegion|html}}{{modelData.HotelName|html}}</p>
+                            <p ms-if="modelData.HotelLocation!=''">地址：{{modelData.HotelLocation|html}}</p>
+                        </div>
+                    </div>
+                    <div class="inlist" ms-if="currentuser.RoomNumber!=''">
+                        <span class="parent_title">
+                            房间号
+                        </span>
+                        <div class="item-con ">
+                            {{tempmodel.FormatHTML(currentuser.RoomNumber)|html}}
+                        </div>
+                    </div>
+                    <div class="inlist" ms-if="currentuser.ServiceUserName!=''">
+                        <span class="parent_title ">
+                            您的专属联络员
+                        </span>
+                        <div class="item-con ">
+                            <p>姓名：{{tempmodel.FormatHTML(currentuser.ServiceUserName)|html}}</p>
+                            <p ms-if="currentuser.ServiceUserMobphone!=''">电话：<span class="mobphone" style=" text-decoration:underline;">{{ComFunJS.SetContactPhone(currentuser.ServiceUserMobphone)|html}}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--座位引导-->
+        <div class="hy_menu bg-white bg-grey hyzuowei" id="item-4">
+            <div class="title">
+                <i></i>座位引导
+            </div>
+            <div class="item-bg" style="margin-top:10px;">
+                <div class="zcb-content">
+                    <div style="text-align:center;">
+                        {{modelData.StartTime|date('M月d日H:mm')}} - {{modelData.EndTime|date('M月d日H:mm')}}
+                        <br />{{modelData.Name}}
+                    </div>
+                    <div class="zcb-title">尊敬的{{currentuser.Name}}，您的座位在<br /><span style="color:#ff4700" class="attention">红色位置区域</span></div>
+                    <div class="chairmen-wrapper">
+                        <div class="room-chairmen">
+                            <!--<ul><li ms-repeat-el="ZCUserNames"><span>{{el.UserRealName}}</span></li></ul>-->
+                            主席台
+                        </div>
+                    </div>
+                    <div class="room-block-hold">
+                        <div class="room-block">
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-bottom:10px;">请左右滑动查找您的座位</div>
+                </div>
+            </div>
+        </div>
+
+        <!--简介-->
+        <div class="hy_menu bg-white bg-grey hysummary " id="item-5" ms-if="modelData.Summary!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>{{modelData.SummaryTitle}}
+                </div>
+                <div class="item-description">
+                    {{modelData.Summary|html}}
+                </div>
+            </div>
+        </div>
+
+        <!--简介2-->
+        <div class="hy_menu bg-white bg-grey hycomment " id="item-6" ms-if="modelData.Comment!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>{{modelData.CommentTitle}}
+                </div>
+                <div class="item-description">
+                    {{modelData.Comment|html}}
+                </div>
+            </div>
+        </div>
+
+        <!--会议须知-->
+        <div class="hy_menu bg-white bg-grey hyxuzhi " id="item-7" ms-if="modelData.HYXZ!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>会议须知
+                </div>
+                <div class="item-description">
+                    {{modelData.HYXZ|html}}
+                </div>
+            </div>
+        </div>
+
+        <!--安全应急预案-->
+        <div class="hy_menu bg-white bg-grey hysecurity " id="item-8" ms-if="modelData.Security!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>安全应急预案
+                </div>
+                <div class="item-description">
+                    {{modelData.Security|html}}
+                </div>
+            </div>
+        </div>
+
+        <!--服务指南-->
+        <div class="hy_menu  bg-white bg-grey hyfuwu" id="item-9" ms-if="modelData.HYFW!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>服务指南
+                </div>
+                <div class="item-description">
+                    {{modelData.HYFW|html}}
+                </div>
+            </div>
+        </div>
+
+        <!--日程安排-->
+        <div class="hy_menu bg-white bg-grey hyrich" id="item-10" ms-if="modelData.Details!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>日程安排
+                </div>
+                <div class="item-description">
+                    {{modelData.Details|html}}
+                </div>
+            </div>
+        </div>
+
+        <!--用餐安排-->
+        <div class="hy_menu bg-white bg-grey hyyongcan" id="item-11" ms-if="modelData.YCTIME!=''||modelData.YCLOCATION!=''||currentuser.YCTIME!=''||currentuser.YCLOCATION!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>用餐安排
+                </div>
+                <div class="item-description">
+                    <div class="inlist" ms-if="modelData.YCTIME!=''||currentuser.YCTIME!=''">
+                        <span class="parent_title">
+                            用餐时间
+                        </span>
+                        <div class="item-con ">
+                            <div ms-if="currentuser.YCTIME!=''">
+                                {{tempmodel.FormatHTML(currentuser.YCTIME)}}
+                            </div>
+                            <div ms-if="currentuser.YCTIME==''">
+                                {{modelData.YCTIME|html}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inlist" ms-if="modelData.YCLOCATION!=''||currentuser.YCLOCATION!=''">
+                        <span class="parent_title">
+                            用餐地点
+                        </span>
+                        <div class="item-con ">
+                            <div ms-if="currentuser.YCLOCATION!=''">
+                                {{tempmodel.FormatHTML(currentuser.YCLOCATION)}}
+                            </div>
+                            <div ms-if="currentuser.YCLOCATION==''">
+                                {{modelData.YCLOCATION|html}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--参会代表-->
+        <div class="hy_menu bg-white bg-grey hydaibiao" id="item-12" style="padding-bottom:70px;">
+            <div class="title title-g">
+                <i></i>参会代表
+            </div>
+            <div class="content-bg" style="margin-top:10px;border-top:solid 1px #e1e1e1;">
+                {{tempmodel.CYUserStr|html}}
+            </div>
+        </div>
+
+        <!--会务机构-->
+        <div class="hy_menu bg-white bg-grey hyorganization " id="item-13" ms-if="modelData.Organization!=''">
+            <div class="item-bg">
+                <div class="title">
+                    <i></i>会务机构
+                </div>
+                <div class="item-description">
+                    {{modelData.Organization|html}}
+                </div>
+            </div>
+        </div>
+
+        <!--资料下载-->
+        <div class="hy_menu bg-white bg-grey zldownload" id="item-14" ms-if="modelData.Files!=''">
+            <div class="title">
+                <i></i>资料下载
+            </div>
+            <div class="content-bg" style="margin-top:10px;">
+                <div class="viewimg_for_view">{{modelData.Files}}</div>
+            </div>
+        </div>
+
+        <!--接送服务-->
+        <div class="hy_menu bg-white bg-grey picksend" id="item-15">
+            <div class="title">
+                <i></i>接送服务
+            </div>
+            <div class="content-bg">
+                <div class="item-title">
+                    接机
+                </div>
+                <ul class="item-con-list" id="PickupList">
+                    <li>
+                        交通工具
+                    </li>
+                    <li class="edit-icon">
+                        <select ms-duplex="currentuser.PickupType" ms-change="ChangeType(this.value,'PickupTitle','Pickup')">
+                            <option value="">无</option>
+                            <option ms-repeat-item="ComFunJS.TravelType" ms-attr-value="item.ID" ms-attr-selected="item.ID==currentuser.PickupType?'selected':''">{{item.TypeName}}</option>
+                        </select>
+                    </li>
+                    <li class="Pickup">
+                        <span id="PickupTitle">航班号</span>
+                    </li>
+                    <li class="Pickup edit-icon">
+                        <input id="PickupNumber" ms-duplex="currentuser.PickupNumber" placeholder="请填写" />
+                    </li>
+                    <li class="Pickup PickupDate">
+                        到达日期
+                    </li>
+                    <li class="Pickup PickupDate edit-icon">
+                        <input ms-duplex="currentuser.PickupDate" id="PickupDate" placeholder="请选择" />
+                    </li>
+                    <li ms-if="currentuser.PickupUser!=''">
+                        <span>接机人</span>
+                    </li>
+                    <li ms-if="currentuser.PickupUser!=''">
+                        <span>{{currentuser.PickupUser}}</span>
+                    </li>
+                    <li ms-if="currentuser.PickupUserMob!=''">
+                        <span>接机人电话</span>
+                    </li>
+                    <li ms-if="currentuser.PickupUserMob!=''" style="white-space:nowrap">
+                        <!--<span>{{ComFunJS.SetContactPhone(currentuser.PickupUserMob)|html}}</span>-->
+                        <span>{{currentuser.PickupUserMob|html}}</span>
+                    </li>
+                    <li ms-if="currentuser.PickupCarNumber!=''">
+                        <span>车牌号</span>
+                    </li>
+                    <li ms-if="currentuser.PickupCarNumber!=''">
+                        <span>{{currentuser.PickupCarNumber}}</span>
+                    </li>
+                    <li ms-if="currentuser.PickupLocation!=''">
+                        <span>上车地点</span>
+                    </li>
+                    <li ms-if="currentuser.PickupLocation!=''">
+                        <span>{{currentuser.PickupLocation}}</span>
+                    </li>
+                </ul>
+                <div class="item-title">
+                    送机
+                </div>
+                <ul class="item-con-list" id="SendoffList">
+                    <li>
+                        交通工具
+                    </li>
+                    <li class="edit-icon">
+                        <select ms-duplex="currentuser.SendoffType" ms-change="ChangeType(this.value,'SendoffTitle','Sendoff')">
+                            <option value="">无</option>
+                            <option ms-repeat-item="ComFunJS.TravelType" ms-attr-value="item.ID" ms-attr-selected="item.ID==currentuser.SendoffType?'selected':''">{{item.TypeName}}</option>
+                        </select>
+                    </li>
+                    <li class="Sendoff">
+                        <span id="SendoffTitle">航班号</span>
+                    </li>
+                    <li class="Sendoff edit-icon">
+                        <input id="SendoffNumber" ms-duplex="currentuser.SendoffNumber" placeholder="请填写" />
+                    </li>
+                    <li class="Sendoff SendoffDate">
+                        出发日期
+                    </li>
+                    <li class="Sendoff SendoffDate edit-icon">
+                        <input ms-duplex="currentuser.SendoffDate" id="SendoffDate" placeholder="请选择" />
+                    </li>
+                    <li ms-if="currentuser.SendoffUser!=''">
+                        <span>送机人</span>
+                    </li>
+                    <li ms-if="currentuser.SendoffUser!=''">
+                        <span>{{currentuser.SendoffUser}}</span>
+                    </li>
+                    <li ms-if="currentuser.SendoffUserMob!=''">
+                        <span>送机人电话</span>
+                    </li>
+                    <li ms-if="currentuser.SendoffUserMob!=''" style="white-space:nowrap">
+                        <!--<span>{{ComFunJS.SetContactPhone(currentuser.SendoffUserMob)|html}}</span>-->
+                        <span>{{currentuser.SendoffUserMob|html}}</span>
+                    </li>
+                    <li ms-if="currentuser.SendoffCarNumber!=''">
+                        <span>车牌号</span>
+                    </li>
+                    <li ms-if="currentuser.SendoffCarNumber!=''">
+                        <span>{{currentuser.SendoffCarNumber}}</span>
+                    </li>
+                    <li ms-if="currentuser.SendoffLocation!=''">
+                        <span>上车地点</span>
+                    </li>
+                    <li ms-if="currentuser.SendoffLocation!=''">
+                        <span>{{currentuser.SendoffLocation}}</span>
+                    </li>
+                </ul>
+                <div class="gobutton-blue" style="padding-top:30px;  padding-bottom:50px;">
+                    <span id="phone_input_submit" ms-on-click="SaveType()">保存</span>
+                </div>
+            </div>
+        </div>
+
+        <!--地图导航-->
+        <div class="hy_menu bg-white bg-grey hynavigate" id="item-16" ms-if="modelData.LocationImg !='' ||  (modelData.LbsRegion != '' && modelData.LbsLocation != '') || (modelData.HotelRegion!='' && (modelData.HotelName != '' || currentuser.HotelName != ''))">
+            <div class="title">
+                <i></i>地图导航
+                <a style="display:block; float:right; margin-right:10px;font-size:80%;" ms-if="modelData.LocationImg==''" ms-click="tempmodel.ReLoadMap()">刷新地图</a>
+            </div>
+            <div class="content-bg" style="">
+                <div ms-if="modelData.LocationImg!=''">
+                    {{modelData.LocationImg|html}}
+                </div>
+                <div ms-if="modelData.LocationImg==''">
+                    <iframe id="mapping" src="" style="width:100%; height:100%; border:none;"></iframe>
+                </div>
+
+            </div>
+        </div>
+
+        <!--影像纪实-->
+        <div class="hy_menu bg-white bg-grey hyvideo" id="item-17">
+            <div class="title">
+                <i></i>影像纪实
+            </div>
+            <div class="content-bg video-body">
+                <div ms-if="modelData.Video1Title!=''&&modelData.Video1Url!=''">
+                    <div class="video-title video-title-small">
+                        {{modelData.Video1Title}}
+                    </div>
+                    <div class="video-content v-medium">
+                        <video id="video1" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none" style="width:100%; height:100%;"
+                               poster="/view_mobile/images/video2.jpg" data-setup="{}">
+                            <source src="" type='video/mp4' />
+                            <!--<source src="http://视频地址格式2.webm" type='video/webm' />
+                            <source src="http://视频地址格式3.ogv" type='video/ogg' />-->
+                            <track kind="captions" src="demo.captions.vtt" srclang="en" label="English" /><!-- Tracks need an ending tag thanks to IE9 -->
+                            <track kind="subtitles" src="demo.captions.vtt" srclang="en" label="English" /><!-- Tracks need an ending tag thanks to IE9 -->
+                        </video>
+                    </div>
+                </div>
+                <div ms-if="modelData.Video2Title!=''&&modelData.Video2Url!=''">
+                    <div class="video-title video-title-small">
+                        {{modelData.Video2Title}}
+                    </div>
+                    <div class="video-content v-medium">
+                        <video id="video2" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none" style="width:100%; height:100%;"
+                               poster="/view_mobile/images/video3.jpg" data-setup="{}">
+                            <source src="" type='video/mp4' />
+                            <track kind="captions" src="demo.captions.vtt" srclang="en" label="English" /><!-- Tracks need an ending tag thanks to IE9 -->
+                            <track kind="subtitles" src="demo.captions.vtt" srclang="en" label="English" /><!-- Tracks need an ending tag thanks to IE9 -->
+                        </video>
+                    </div>
+                </div>
+                <div ms-if="modelData.Video3Title!=''&&modelData.Video3Url!=''">
+                    <div class="video-title video-title-small">
+                        {{modelData.Video3Title}}
+                    </div>
+                    <div class="video-content v-medium">
+                        <video id="video3" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none" style="width:100%; height:100%;"
+                               poster="/view_mobile/images/video1.jpg" data-setup="{}">
+                            <source src="" type='video/mp4' />
+                            <track kind="captions" src="demo.captions.vtt" srclang="en" label="English" /><!-- Tracks need an ending tag thanks to IE9 -->
+                            <track kind="subtitles" src="demo.captions.vtt" srclang="en" label="English" /><!-- Tracks need an ending tag thanks to IE9 -->
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="up-and-down">
+            <li>
+                <div class="arrow-up" ms-on-click="getpredata(tempmodel.stepindex)">
+                    <span>上一页</span>
+                </div>
+            </li>
+            <li>
+                <div class="back-away" ms-on-click="getdata(1)">
+                    <span>目录</span>
+                </div>
+            </li>
+            <li>
+                <div class="arrow-down" ms-on-click="getnextdata(tempmodel.stepindex)">
+                    <span>下一页</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script src="/View_Mobile/js/layer/layer.m.js"></script>
+    <script src="/View_Mobile/js/zepto.js"></script>
+    <script src="/View_Mobile/JS/avalon.min.js"></script>
+    <script src="/View_Mobile/js/ComFunJS.js"></script>
+    <script src="/View_Mobile/js/Jquery2.1.js"></script>
+    <script src="/View_Mobile/js/Date/FT_Date.min.js"></script>
+    <script src="/View_Mobile/js/video.js"></script>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=rIHnNifrMRwoxGjoChaiClXQqt96IRiw"></script>
+    <script>
+        var myPlayer1 = videojs('video1');
+        var myPlayer2 = videojs('video2');
+        var myPlayer3 = videojs('video3');
+        var src1 = "";
+        var src2 = "";
+        var src3 = "";
+
+        var tempmodel = avalon.define({
+            $id: "Hydetail",
+            ColumnData: [],
+            name: "会议管理",
+            iswf: true,//是否属于流程表单
+            tpData: [],
+            CYUserStr: "",
+            Mapsrc: "",
+            seats: [],
+            modelData: { "RoomID": "", "RoomWidth": "", "RoomLength": "", "Title": "", "Details": "", "StartTime": "", "EndTime": "", "CYUser": "", "FQUser": "", "TXSJ": "-1", "HYJL": "", "Remark": "", "JLFiles": "", "Files": "", "JLUser": "", "ZCUser": "", "SXUser": "", "HYFW": "", "HYXZ": "", "ZCB": "", "ZSAP": "", "FZQK": "", "CXQK": "", "YCQK": "", "YCTIME": "", "YCLOCATION": "", "BoardingTime": "", "CarNumber": "", "HotelName": "", "HotelLocation": "", "LbsRegion": "", "LbsLocation": "", "Security": "", "Organization": "", "Summary": "", "SummaryTitle": "", "SummarySubTitle": "", "Comment": "", "CommentTitle": "", "CommentSubTitle": "", "LocationImg": "", "IsOff": false, "Template": "", "Video1Title": "", "Video2Title": "", "Video3Title": "", "Video1Url": "", "Video2Url": "", "Video3Url": "" },
+            currentuser: { "ID": 0, "Name": "", "Mobphone": "", "OutDeptName": "", "Type": 1, "Zhiwu": "", "RoomNumber": "", "BoardingTime": "", "CarNumber": "", "YCTIME": "", "YCLOCATION": "", "ServiceUserName": "", "ServiceUserMobphone": "", "PickupType": 0, "PickupNumber": "", "PickupDate": "", "PickupUser": "", "PickupUserMob": "", "PickupCarNumber": "", "PickupLocation": "", "SendoffUser": "", "SendoffUserMob": "", "SendoffCarNumber": "", "SendoffLocation": "", "SendoffType": 0, "SendoffNumber": "", "SendoffDate": "", "HotelName": "", "HotelLocation": "" },
+            dataid: ComFunJS.getQueryString('id'),
+            stepindex: "",
+            logdata: { "ComId": 0, "UserID": 0, "Name": "", "Mobphone": "", "HYGLID": 0 },
+            gostart: function (index) {
+                location.href = "/View_Mobile/UI/HyDetail_index_r.html?id=" + tempmodel.dataid + "&r=" + Math.random();
+            },
+            getdata: function (index) {
+                if (index) {
+                    tempmodel.stepindex = index;
+                    $('.hy_menu').hide();
+                    //$('.hy_menu').eq(index - 1).show();
+                    $('#item-' + index).show();
+
+                    if ($('#item-' + index).attr('class').indexOf('bg-white') != -1) {
+                        $('.index-html').hide();
+                    }
+                    else {
+                        $('.index-html').show();
+                    }
+
+                    if ($('#item-' + index).attr('class').indexOf('bg-grey') != -1) {
+                        $('html').css('background', '#f1f1f1');
+                    }
+                    else {
+                        $('html').css('background', '#fff');
+                    }
+
+                    if (index == 1) {
+                        $('.up-and-down').hide();
+                    }
+                    else {
+                        $('.up-and-down').show();
+                        $('.arrow-up').show();
+                        $('.arrow-down').show();
+                        var i = $('.hy_menu').index($('#item-' + index)) + 1;
+                        if ($('.hy_menu').length == i) {
+                            $('.arrow-down').hide();
+                        }
+                    }
+
+                    //视频页特殊处理
+                    if (index != 17) {
+                        myPlayer1.pause();
+                        myPlayer2.pause();
+                        myPlayer3.pause();
+                    }
+                    else {
+                        LoadVideo();
+                    }
+                }
+            },
+            getpredata: function (index) {
+                $('.hy_menu').hide();
+                var id = $("#item-" + index).prev().attr('id');
+                id = id.replace('item-', '');
+                tempmodel.getdata(id);
+            },
+            getnextdata: function (index) {
+                $('.hy_menu').hide();
+                var id = $("#item-" + index).next().attr('id');
+                id = id.replace('item-', '');
+                tempmodel.getdata(id);
+            },
+            //初始化
+            inittemp: function (strId) {
+                var pn = ComFunJS.getCookie("outuserid");
+                if (!pn || pn == null || pn == undefined || pn == '') {
+                    tempmodel.gostart();
+                }
+                strId = tempmodel.dataid;
+                if (strId) {
+                    $.getJSON('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_GETHYGLMODELNOLOGIN', { P1: strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            resultData.Result[0].IsOff = resultData.Result[0].IsOff == 0 ? false : true;
+                            if (resultData.Result[0].IsOff) {
+                                location.href = "/View_Mobile/UI/HyDetail_index_r.html?id=" + strId + "&r=" + Math.random();
+                            }
+                            else {
+                                tempmodel.modelData = resultData.Result[0];
+                                document.title = tempmodel.modelData.Title.replace('<br/>', '') + "详情";
+                                if (tempmodel.modelData.Seats)
+                                    tempmodel.seats = JSON.parse(tempmodel.modelData.Seats);
+                                tempmodel.tpData = resultData.Result1;
+                                tempmodel.LoadNumber();
+                                tempmodel.LoadAllUser();//参会人
+                                tempmodel.LoadRoom();//座次表
+                                ComFunJS.viewimg_for_view(tempmodel.tpData, '1');//文件下载
+                                initVideo();
+                                //setTimeout(" ComFunJS.initForm()", 500);
+                            }
+                        }
+                    })
+                }
+            },
+            LoadAllUser: function () {
+                $.getJSON("/API/VIEWAPINOLOGIN.ashx?action=HYGL_GETOUTUSERLISTBYHYGLID&r=" + Math.random(), { P1: tempmodel.modelData.ID, P2: 0, Status: 0 }, function (r) {
+                    if (r.ErrorMsg == "") {
+                        tempmodel.CYUserStr = ComFunJS.convusers_branch(r.Result);
+                    }
+                })
+            },
+            LoadNumber: function () {
+                var k = 1;
+                $(".tab-link").each(function () {
+                    $(this).children("i").html(k);
+                    k++;
+                });
+                tempmodel.getdata(1);
+            },
+            LoadRoom: function () {
+                var pn = ComFunJS.getCookie("outuserid");
+                if (pn && pn != null && pn != undefined && pn != '') {
+                    $.getJSON("/API/VIEWAPINOLOGIN.ashx?action=HYGL_GETOUTUSERMODELBYID&r=" + Math.random(), { P1: tempmodel.modelData.ID, P2: pn }, function (r) {
+                        if (r.ErrorMsg == "") {
+                            tempmodel.currentuser = r.Result[0];
+                            tempmodel.currentuser.PickupDate = tempmodel.convertDate(tempmodel.currentuser.PickupDate);
+                            tempmodel.currentuser.SendoffDate = tempmodel.convertDate(tempmodel.currentuser.SendoffDate);
+                            tempmodel.SetCalendar();
+
+                            tempmodel.SetRoom();
+
+                            tempmodel.LoadType(tempmodel.currentuser.PickupType, 'PickupTitle', 'Pickup');
+                            tempmodel.LoadType(tempmodel.currentuser.SendoffType, 'SendoffTitle', 'Sendoff');
+                            setTimeout("tempmodel.ChangeTypeStyle()", 1000);
+
+                            if (tempmodel.modelData.LocationImg == '') {
+                                if ((tempmodel.modelData.LbsRegion != '' && tempmodel.modelData.LbsLocation != '') || (tempmodel.modelData.HotelRegion != '' && (tempmodel.modelData.HotelName != '' || tempmodel.currentuser.HotelName != ''))) {
+                                    tempmodel.LoadMap();
+                                }
+                            }
+
+                            tempmodel.signlog();
+                        }
+                    });
+                }
+            },
+            SetRoom: function () {
+                if (tempmodel.modelData.RoomWidth && tempmodel.modelData.RoomLength) {
+                    var rw = parseInt(tempmodel.modelData.RoomWidth);
+                    var rl = parseInt(tempmodel.modelData.RoomLength);
+                    var tmp = '';
+                    tmp += '<ul class="room-width-index">';
+                    for (let l = 1; l <= rl; l++) {
+
+                        tmp += '<li>';
+                        tmp += '<ul class="room-length-index">';
+                        tmp += '<li class="first"  >' + l + '</li>';
+                        for (let w = 1; w <= rw; w++) {
+
+                            var emptyclass = "";
+                            tempmodel.seats.forEach(function (v, i) {
+                                if (v.xcode == l && v.ycode == w) {
+                                    emptyclass = "empty";
+                                }
+                            })
+                            tmp += '<li class="seat_' + l + '_' + w + ' ' + emptyclass + '"  >';
+                            tmp += '</li>';
+                        }
+                        tmp += '</ul>';
+                        tmp += '</li>';
+
+                    }
+                    tmp += '<li class="last-row">';
+                    tmp += '<ul class="room-length-index">';
+                    tmp += '<li class="first"  ></li>';
+                    for (let w = 1; w <= rw; w++) {
+                        tmp += '<li >' + w;
+                        tmp += '</li>';
+                    }
+                    tmp += '</ul>';
+                    tmp += '</li>';
+                    tmp += '</ul>';
+                    $('.room-block').html(tmp);
+                    var wpx = (tempmodel.modelData.RoomWidth * 25) + 'px';
+                    $('.room-block').css('width', wpx);
+                    tempmodel.LoadSelectZcb();
+                }
+            },
+            LoadSelectZcb: function () {
+                if (tempmodel.modelData.ZCB.trim() != "") {
+                    var holdseats = JSON.parse(tempmodel.modelData.ZCB);
+                    holdseats.forEach(function (v, i) {
+                        var _cs = $('.seat_' + v.ycode + '_' + v.xcode);
+                        if (v.userid == tempmodel.currentuser.ID) {
+                            $('.seat_' + v.xcode + '_' + v.ycode).attr("class", "selected");
+                        }
+                    });
+                }
+                if (tempmodel.currentuser.Type == 2) {
+                    $('.attention').html('主席台区域');
+                    $('.attention').css('color', '#007457');
+                }
+            },
+            LoadType: function (val, label, cla) {
+                if (val == 10) {
+                    $('#' + label).html('航班号');
+                    $('.' + cla).removeClass('hide');
+                }
+                else if (val == 20) {
+                    $('#' + label).html('火车车次');
+                    $('.' + cla).removeClass('hide');
+                }
+                else if (val == 30) {
+                    $('#' + label).html('汽车站');
+                    $('.' + cla).removeClass('hide');
+                }
+                else {
+                    $('#' + cla).val('');
+                    $('.' + cla).addClass('hide');
+                }
+            },
+            //接送服务按钮
+            ChangeType: function (val, label, cla) {
+                tempmodel.LoadType(val, label, cla);
+                tempmodel.ChangeTypeStyle();
+            },
+            ChangeTypeStyle: function () {
+                var plen = $('#PickupList li:not(".hide")').length;
+                $('#PickupList li').css('border-bottom', 'solid 1px #e1e1e1');
+                $('#PickupList li:not(".hide"):eq(' + (plen - 2) + ')').css('border-bottom', 'none');
+                $('#PickupList li:not(".hide"):eq(' + (plen - 1) + ')').css('border-bottom', 'none');
+
+                var slen = $('#SendoffList li:not(".hide")').length;
+                $('#SendoffList li').css('border-bottom', 'solid 1px #e1e1e1');
+                $('#SendoffList li:not(".hide"):eq(' + (slen - 2) + ')').css('border-bottom', 'none');
+                $('#SendoffList li:not(".hide"):eq(' + (slen - 1) + ')').css('border-bottom', 'none');
+            },
+            //保存接送服务
+            SaveType: function () {
+                ComFunJS.showload();
+                if (tempmodel.currentuser.PickupType > 0) {
+                    tempmodel.currentuser.PickupDate = $('#PickupDate').val();
+                    tempmodel.currentuser.PickupNumber = $('#PickupNumber').val();
+                }
+                else {
+                    tempmodel.currentuser.PickupNumber = '';
+                    tempmodel.currentuser.PickupDate = '';
+                }
+                if (tempmodel.currentuser.SendoffType > 0) {
+                    tempmodel.currentuser.SendoffDate = $('#SendoffDate').val();
+                    tempmodel.currentuser.SendoffNumber = $('#SendoffNumber').val();
+                }
+                else {
+                    tempmodel.currentuser.SendoffNumber = '';
+                    tempmodel.currentuser.SendoffDate = '';
+                }
+                $.post('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_UPDATEPICKUPSENDOFF&r=' + Math.random(), { P1: JSON.stringify(tempmodel.currentuser.$model) }, function (r) {
+                    if (r.ErrorMsg == null || r.ErrorMsg == "" || r.ErrorMsg == "undefined") {
+                        ComFunJS.winsuccess('保存成功！');
+                    }
+                    else {
+                        ComFunJS.winwarning('保存失败！');
+                    }
+                })
+                ComFunJS.closeAll();
+            },
+            convertDate: function (date) {
+                if (date != null && date != '') {
+                    date = date.replace(new RegExp(/-/gm), "/");
+                    date = date + ":00";
+                    var d = new Date(date);
+                    var month = d.getMonth() + 1;
+                    var day = d.getDate();
+                    var hour = d.getHours();
+                    var minute = d.getMinutes();
+                    if (month < 10) {
+                        month = '0' + month;
+                    }
+                    if (day < 10) {
+                        day = '0' + day;
+                    }
+                    if (hour < 10) {
+                        hour = '0' + hour;
+                    }
+                    if (minute < 10) {
+                        minute = '0' + minute;
+                    }
+                    var r = d.getFullYear() + '-' + month + '-' + day + ' ' + hour + ":" + minute;
+                    return r;
+                }
+                return date;
+            },
+            //日历控件
+            SetCalendar: function () {
+                var currYear = (new Date()).getFullYear();
+                var opt = {
+                    date: { preset: 'date' },
+                    datetime: { preset: 'datetime' },
+                    time: { preset: 'time' },
+                    defaultopi: {
+                        theme: 'default', //皮肤样式
+                        display: 'modal', //显示方式
+                        mode: 'scroller', //日期选择模式
+                        lang: 'zh',
+                        startYear: currYear, //开始年份
+                        endYear: currYear + 2, //结束年份
+                        onShow: function (html, valueText, inst) {
+                        }
+                    },
+
+                };
+                var optDateTime = $.extend(opt['datetime'], opt['defaultopi']);
+                if (tempmodel.currentuser.PickupDate != '') {
+                    var date = tempmodel.currentuser.PickupDate;
+                    date = date.replace(new RegExp(/-/gm), "/");
+                    date = date + ":00";
+                    var d = new Date(date);
+                    $("#PickupDate").scroller($.extend(opt['datetime'], opt['defaultopi'])).scroller('setDate', d, true);
+                }
+                else {
+                    var PickupDATE = $("#PickupDate").mobiscroll(optDateTime).datetime(optDateTime);
+                }
+                if (tempmodel.currentuser.SendoffDate != '') {
+                    var date = tempmodel.currentuser.SendoffDate;
+                    date = date.replace(new RegExp(/-/gm), "/");
+                    date = date + ":00";
+                    var d = new Date(date);
+                    $("#SendoffDate").scroller($.extend(opt['datetime'], opt['defaultopi'])).scroller('setDate', d, true);
+                }
+                else {
+                    var SendoffDATE = $("#SendoffDate").mobiscroll(optDateTime).datetime(optDateTime);
+                }
+                //var optDateTime = $.extend(opt['datetime'], opt['defaultopi']);
+                //var PickupDATE = $("#PickupDate").mobiscroll(optDateTime).datetime(optDateTime);
+                //var SendoffDATE = $("#SendoffDate").mobiscroll(optDateTime).datetime(optDateTime);
+            },
+            FormatHTML: function (str) {
+                str = str.replace(/\n/g, '_@').replace(/\r/g, '_#');
+                str = str.replace(/_#_@/g, '<br/>');//IE7-8
+                str = str.replace(/_@/g, '<br/>');//IE9、FF、chrome
+                str = str.replace(/\s/g, '&nbsp;');//空格处理
+                return str;
+            },
+            ReLoadMap: function () {
+                $('#mapping').attr('src', tempmodel.Mapsrc);
+            },
+            LoadMap: function () {
+                var region = tempmodel.modelData.HotelRegion;
+                var destination = tempmodel.currentuser.HotelName;
+                if (destination == '') {
+                    destination = tempmodel.modelData.HotelName;
+                }
+                if (region == '' || destination == '') {
+                    region = tempmodel.modelData.LbsRegion;
+                    destination = tempmodel.modelData.LbsLocation;
+                }
+                var map = new BMap.Map("mapping");
+                var point = new BMap.Point(30.668497, 104.11315);
+                map.centerAndZoom(point, 12);
+
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function (r) {
+                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                        var mk = new BMap.Marker(r.point);
+                        map.addOverlay(mk);
+                        map.panTo(r.point);
+                        tempmodel.Mapsrc = 'http://api.map.baidu.com/direction?origin=latlng:' + r.point.lat + ',' + r.point.lng + '|name:&destination=' + destination + '&mode=driving&region=' + region + '&output=html&ak=rIHnNifrMRwoxGjoChaiClXQqt96IRiw';
+                        setTimeout(" tempmodel.ReLoadMap()", 1000);
+                    }
+                });
+
+                //腾讯地图  很不好用
+                //tempmodel.Mapsrc  = "https://apis.map.qq.com/tools/routeplan/eword=" + region + destination + "&transport=2?referer=myapp&key=O47BZ-GWE3D-LPB4R-P4E46-HMACS-WKFRQ";
+                //$('#mapping').attr('src', tempmodel.Mapsrc);
+            },
+            signlog: function () {
+                tempmodel.logdata.ComId = tempmodel.currentuser.ComId;
+                tempmodel.logdata.UserID = tempmodel.currentuser.ID;
+                tempmodel.logdata.Name = tempmodel.currentuser.Name;
+                tempmodel.logdata.Mobphone = tempmodel.currentuser.Mobphone;
+                tempmodel.logdata.HYGLID = tempmodel.modelData.ID;
+                $.post('/API/VIEWAPINOLOGIN.ashx?Action=HYGL_ADDOUTUSERLOG', { P1: JSON.stringify(tempmodel.logdata.$model) }, function (r) {
+                    if (r.ErrorMsg == "") {
+                    }
+                });
+            }
+        });
+
+        avalon.ready(function () {
+            $('.hy_menu').hide();
+            $('.up-and-down').hide();
+            tempmodel.inittemp();
+        })
+
+        $(window).on("load resize", function () {
+            var h = document.documentElement.clientHeight || window.innerHeight;
+            $(".wrapper").css("height", h + 'px');
+            $("#mapping").css("height", (h - 88) + 'px');
+            setTimeout('LoadVideo()', 500);
+        });
+
+        function LoadVideo() {
+            $("#video1").css("height", ($("#video1").width() * 9 / 16) + "px");
+            $("#video2").css("height", ($("#video2").width() * 9 / 16) + "px");
+            $("#video3").css("height", ($("#video3").width() * 9 / 16) + "px");
+        }
+
+        function initVideo() {
+            src1 = tempmodel.modelData.Video1Url;
+            src2 = tempmodel.modelData.Video2Url;
+            src3 = tempmodel.modelData.Video3Url;
+            myPlayer1.src(src1);
+            myPlayer2.src(src2);
+            myPlayer3.src(src3);
+            videojs("video1").ready(function () {
+                var myPlayer1 = this;
+                this.on('play', function () {
+                    myPlayer2.pause();
+                    myPlayer3.pause();
+                    myPlayer2.src(src2);
+                    myPlayer3.src(src3);
+                });
+            });
+            videojs("video2").ready(function () {
+                var myPlayer2 = this;
+                this.on('play', function () {
+                    myPlayer1.pause();
+                    myPlayer3.pause();
+                    myPlayer1.src(src1);
+                    myPlayer3.src(src3);
+                });
+            });
+            videojs("video3").ready(function () {
+                var myPlayer3 = this;
+                this.on('play', function () {
+                    myPlayer1.pause();
+                    myPlayer2.pause();
+                    myPlayer1.src(src1);
+                    myPlayer2.src(src2);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
