@@ -114,7 +114,7 @@
                             地图导航
                         </span>
                     </a>
-                    <a href="#" ms-on-click="getdata(17)" class="tab-link button external">
+                    <a href="#" ms-on-click="getdata(17)" class="tab-link button external" ms-if="(modelData.Video1Title!=''&&modelData.Video1Url!='') || (modelData.Video2Title!=''&&modelData.Video2Url!='') || (modelData.Video3Title!=''&&modelData.Video3Url!='')">
                         <img src="/View_Mobile/Images/icon/video1.png" style="border-radius: 2px;">
                         <span>
                             影像纪实
@@ -524,7 +524,7 @@
         </div>
 
         <!--影像纪实-->
-        <div class="hy_menu bg-white bg-grey hyvideo" id="item-17">
+        <div class="hy_menu bg-white bg-grey hyvideo" id="item-17" ms-if="(modelData.Video1Title!=''&&modelData.Video1Url!='') || (modelData.Video2Title!=''&&modelData.Video2Url!='') || (modelData.Video3Title!=''&&modelData.Video3Url!='')">
             <div class="title">
                 <i></i>影像纪实
             </div>
