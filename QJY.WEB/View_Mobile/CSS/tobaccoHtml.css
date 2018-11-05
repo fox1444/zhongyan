@@ -288,7 +288,7 @@ a {
         font-size: 110%;
         text-align: center;
         padding: 13px 10px 6px 10px;
-        margin-bottom: 20px;
+        margin-bottom: 0px;
         background: #019FE8;
         color: #fff;
     }
@@ -300,7 +300,7 @@ a {
 
 .wrapper .content-bg {
     margin: 0px auto;
-    width: 90%;
+    width: 92%;
     line-height: 150%;
 }
 
@@ -322,6 +322,11 @@ a {
 .wrapper .bg-grey {
     background: #f1f1f1;
     padding: 0 0 10px 0;
+}
+
+.wrapper .menu_index {
+    background: url(/View_Mobile/Images/foot.jpg) bottom center no-repeat #D6000F;
+    background-size:100% auto;
 }
 
 .wrapper .bg-holder {
@@ -375,11 +380,14 @@ a {
 
     .wrapper .hy_menu_list a {
         float: left;
-        width: 33%;
+        width: 30%;
         text-decoration: none;
         display: block;
-        margin: 20px 0;
+        margin: 5px;
+        padding:12px 0 8px 0;
+        background:#fff;
         text-align: center;
+        border-radius:7px;
     }
 
     .wrapper .hy_menu_list i {
@@ -453,7 +461,6 @@ a {
                 border-bottom: none;
             }
 
-
 .bg-grey .item-title {
     padding: 10px 15px 5px 15px;
 }
@@ -481,6 +488,7 @@ a {
 .hycomment .title i {
     background: url(/View_Mobile/Images/icon/PXGL.png) center center no-repeat;
 }
+
 .hyxuzhi .title i {
     background: url(/View_Mobile/Images/icon/ZHBG.jpg) center center no-repeat;
 }
@@ -550,6 +558,7 @@ a {
 .hynavigate .title i {
     border-radius: 2px;
 }
+
 .mobphone a {
     color: #fff;
 }
@@ -738,15 +747,15 @@ a {
     float: right;
     display: block;
     width: 70%;
-    text-align:right;
+    text-align: right;
 }
 
-    .list_parent_node .list_child_node::after {
-        content: " ";
-        display: block;
-        line-height: 0px;
-        clear: both;
-    }
+.list_parent_node .list_child_node::after {
+    content: " ";
+    display: block;
+    line-height: 0px;
+    clear: both;
+}
 
 .item-con {
     padding: 4px 0 4px 8px;
@@ -816,13 +825,15 @@ a {
         background: url(/View_Mobile/Images/zuoyi.png) no-repeat center center;
         background-size: 100%;
     }
-        .room-length-index li.empty{
-            background:none;
+
+        .room-length-index li.empty {
+            background: none;
         }
-        .room-length-index .selected {
-            background: url(/View_Mobile/Images/zuoyi-selected.png) no-repeat center center;
-            background-size: 100%;
-        }
+
+    .room-length-index .selected {
+        background: url(/View_Mobile/Images/zuoyi-selected.png) no-repeat center center;
+        background-size: 100%;
+    }
 
 .room-width-index .first {
     background: none;
