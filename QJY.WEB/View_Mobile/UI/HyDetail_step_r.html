@@ -18,11 +18,12 @@
     <div class="index-html" style="display:none;">
     </div>
     <div class="wrapper">
-        <div class="hy_menu bg-white" id="item-1" style="padding:0;">
+        <div class="hy_menu bg-white menu_index" id="item-1" style="padding:0;">
             <div class="banner">
-                {{modelData.Title|html}}
+                <!--{{modelData.Title|html}}-->
+                <img src="/View_Mobile/Images/title-text.jpg" style="width:70%;" />
             </div>
-            <div class="content-bg">
+            <div class="content-bg ">
                 <div class="hy_menu_list">
                     <a href="#" ms-on-click="getdata(2)" class="button external" ms-class-1="tab-link:modelData.CXQK!=''||modelData.BoardingTime!=''||modelData.CarNumber!=''||currentuser.BoardingTime!=''||currentuser.CarNumber!=''" ms-if="modelData.CXQK!=''||modelData.BoardingTime!=''||modelData.CarNumber!=''||currentuser.BoardingTime!=''||currentuser.CarNumber!=''">
                         <img src="/View_Mobile/Images/icon/YCGL.png">
@@ -127,6 +128,8 @@
                         </span>
                     </a>
                 </div>
+            </div>
+            <div style="clear:both;">
             </div>
         </div>
 
@@ -706,7 +709,7 @@
                                 tempmodel.LoadNumber();
                                 tempmodel.LoadAllUser();//参会人
                                 tempmodel.LoadRoom();//座次表
-                                ComFunJS.viewimg_for_view(tempmodel.tpData, '1');//文件下载                               
+                                ComFunJS.viewimg_for_view(tempmodel.tpData, '1');//文件下载
                                 initVideo();
                                 //setTimeout(" ComFunJS.initForm()", 500);
                             }
@@ -1007,6 +1010,7 @@
         $(window).on("load resize", function () {
             var h = document.documentElement.clientHeight || window.innerHeight;
             $(".wrapper").css("height", h + 'px');
+            $(".menu_index").css("height", (h+10) + 'px');
             $("#mapping").css("height", (h - 88) + 'px');
             setTimeout('LoadVideo()', 500);
         });

@@ -52,14 +52,14 @@ a {
     }
 
 .hy_wrap_r .index-html {
-    background: #f4ae00;
+    background: #D6000F;
     background-image: none;
 }
 
 .hy_wrap_r .hy_wrap {
-    background: url(/View_Mobile/Images/body-bg.jpg) top right no-repeat #F4AE00;
-    background-size: auto 100%;
-    color: #000;
+    background: url(/View_Mobile/Images/foot.jpg) bottom center no-repeat #D6000F;
+    background-size: 100% auto;
+    color: #FDDEA5;
 }
 
 .hy_wrap_r a {
@@ -82,22 +82,22 @@ a {
 }
 
 .hy_wrap_r .logo {
-    background: url(/View_Mobile/Images/logo-bg2.png) left top no-repeat;
+    background: url(/View_Mobile/Images/logo-bg.jpg) center top no-repeat;
     background-size: 100%;
-    height: 110px;
+    height: 90px;
 }
 
 .logo::before {
-    content: "";
+    /*content: "";
     width: 100%;
     min-height: 60px;
     display: block;
     background: url(/View_Mobile/Images/tobacco-logo1.png) 10px center no-repeat;
     background-size: 30%;
-    margin: 0 0 0 0;
+    margin: 0 0 0 0;*/
 }
 
-.hy_wrap_r .logo::after {
+/*.hy_wrap_r .logo::after {
     content: "";
     width: 96%;
     min-height: 60px;
@@ -105,7 +105,7 @@ a {
     background: url(/View_Mobile/Images/tobacco-fi-2.png) right center no-repeat;
     background-size: 40%;
     margin: -58px 0px 0 0;
-}
+}*/
 
 .title {
     font-weight: bold;
@@ -127,7 +127,7 @@ a {
     font-size: 110%;
     text-align: left;
     width: 85%;
-    margin: 16px auto;
+    margin: 12px auto;
 }
 
 .ewrcode {
@@ -179,8 +179,8 @@ a {
     border-radius: 3px;
     width: 50%;
     margin: 0 auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 34px;
+    margin-bottom: 34px;
     padding: 9px 0;
     letter-spacing: 1px;
     font-size: 100%;
@@ -211,7 +211,7 @@ a {
 }
 
 .input_block {
-    margin-top: 40px;
+    margin-top: 28px;
     display: none;
 }
 
@@ -287,19 +287,20 @@ a {
     .wrapper .banner {
         font-size: 110%;
         text-align: center;
-        padding: 10px;
-        margin-bottom: 20px;
+        padding: 13px 10px 6px 10px;
+        margin-bottom: 0px;
         background: #019FE8;
         color: #fff;
     }
 
 .hy_step_r .wrapper .banner {
-    background: url(/View_Mobile/Images/logo-bg.jpg) right top no-repeat;
+    /*background: url(/View_Mobile/Images/logo-bg.jpg) center top no-repeat;*/
+    background: #D6000F;
 }
 
 .wrapper .content-bg {
     margin: 0px auto;
-    width: 90%;
+    width: 92%;
     line-height: 150%;
 }
 
@@ -321,6 +322,11 @@ a {
 .wrapper .bg-grey {
     background: #f1f1f1;
     padding: 0 0 10px 0;
+}
+
+.wrapper .menu_index {
+    background: url(/View_Mobile/Images/foot.jpg) bottom center no-repeat #D6000F;
+    background-size:100% auto;
 }
 
 .wrapper .bg-holder {
@@ -374,11 +380,14 @@ a {
 
     .wrapper .hy_menu_list a {
         float: left;
-        width: 33%;
+        width: 30%;
         text-decoration: none;
         display: block;
-        margin: 20px 0;
+        margin: 5px;
+        padding:12px 0 8px 0;
+        background:#fff;
         text-align: center;
+        border-radius:7px;
     }
 
     .wrapper .hy_menu_list i {
@@ -452,7 +461,6 @@ a {
                 border-bottom: none;
             }
 
-
 .bg-grey .item-title {
     padding: 10px 15px 5px 15px;
 }
@@ -480,6 +488,7 @@ a {
 .hycomment .title i {
     background: url(/View_Mobile/Images/icon/PXGL.png) center center no-repeat;
 }
+
 .hyxuzhi .title i {
     background: url(/View_Mobile/Images/icon/ZHBG.jpg) center center no-repeat;
 }
@@ -549,8 +558,9 @@ a {
 .hynavigate .title i {
     border-radius: 2px;
 }
+
 .mobphone a {
-    color: green;
+    color: #fff;
 }
 
 .video-body {
@@ -737,15 +747,15 @@ a {
     float: right;
     display: block;
     width: 70%;
-    text-align:right;
+    text-align: right;
 }
 
-    .list_parent_node .list_child_node::after {
-        content: " ";
-        display: block;
-        line-height: 0px;
-        clear: both;
-    }
+.list_parent_node .list_child_node::after {
+    content: " ";
+    display: block;
+    line-height: 0px;
+    clear: both;
+}
 
 .item-con {
     padding: 4px 0 4px 8px;
@@ -815,13 +825,15 @@ a {
         background: url(/View_Mobile/Images/zuoyi.png) no-repeat center center;
         background-size: 100%;
     }
-        .room-length-index li.empty{
-            background:none;
+
+        .room-length-index li.empty {
+            background: none;
         }
-        .room-length-index .selected {
-            background: url(/View_Mobile/Images/zuoyi-selected.png) no-repeat center center;
-            background-size: 100%;
-        }
+
+    .room-length-index .selected {
+        background: url(/View_Mobile/Images/zuoyi-selected.png) no-repeat center center;
+        background-size: 100%;
+    }
 
 .room-width-index .first {
     background: none;

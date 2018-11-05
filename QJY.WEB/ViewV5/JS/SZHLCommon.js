@@ -1,5 +1,5 @@
 ﻿var ComFunJS = new Object({
-    yuming: "http://www.lstobacco.com",
+    yuming: "http://hw.sctobacco.com:9000",
     isIE: function () {
         if (!!window.ActiveXObject || "ActiveXObject" in window)
             return true;
@@ -505,7 +505,7 @@
             ctx.stroke();    //居中的锚点
             ctx.textAlign = "center";
 
-            ctx.fillStyle = '#000';   // 文字填充颜色  
+            ctx.fillStyle = '#FDDEA5';   // 文字填充颜色  
             ctx.font = len / 2 + "px 微软雅黑";
             ctx.fillText(str, width / 2, (height + len / 2));
             //ctx.drawImage(this, 0, 0,1024,768);//改变图片的大小到1024*768
@@ -514,16 +514,16 @@
     DrawQrcode: function (id, url, content, size, type, title) {
         var width = 200;
         var height = 200;
-        var imgwidth = 100;
-        var imgheight = 30;
+        var imgwidth = 60;
+        var imgheight = 46;
         var len = 30;
         var charlen;
 
         if (size == 'medium') {
             width = 400;
             height = 400;
-            imgwidth = 200;
-            imgheight = 60;
+            imgwidth = 100;
+            imgheight = 76;
             len = 40;
             if (type == 'zm')
                 charlen = 30;
@@ -534,8 +534,8 @@
         else if (size == 'large') {
             width = 600;
             height = 600;
-            imgwidth = 300;
-            imgheight = 90;
+            imgwidth = 200;
+            imgheight = 154;
             len = 60;
             if (type == 'zm')
                 charlen = 30;
@@ -568,15 +568,15 @@
             text: url,                //扫描二维码后显示的内容,可以直接填一个网址，扫描二维码后自动跳向该链接
             width: width,               //二维码的宽度
             height: height,              //二维码的高度
-            background: "#ffffff",    //二维码的后景色
-            foreground: "#007457",    //二维码的前景色
-            src: ComFunJS.yuming + "/View_Mobile/images/tobacco-logo-icon.png",   //logo地址
+            background: "#FDDEA5",    //二维码的后景色
+            foreground: "#D6000F",    //二维码的前景色
+            src: ComFunJS.yuming + "/View_Mobile/images/logo-icon.jpg",   //logo地址
             imgWidth: imgwidth,     //logo宽度
             imgHeight: imgheight,     //logo高度
             content: str,      //文字说明
             len: len            //文字高度
         });
-        $('#' + id).css("width", width + 16 + "px").css("border", "solid 1px #ccc").css("background", "#fff");
+        $('#' + id).css("width", width + 16 + "px").css("border", "solid 1px #ccc").css("background", "#FDDEA5");
         $("#" + id + " canvas").css("padding", "7px 7px 2px 7px");
     },//绘制有文字的二维码新
     convertuser: function (user) {
@@ -1510,7 +1510,7 @@
         { "ID": "30", "TypeName": "汽车" },
     ],
     TemplateData: [
-        { "TemplateName": "凉山烟草红", "TemplatePage":"_r" },
+        { "TemplateName": "红", "TemplatePage": "_r" },
         { "TemplateName": "蓝", "TemplatePage": "_b" },
     ]
 });
