@@ -250,7 +250,7 @@
             $.post("/API/VIEWAPI.ashx", { Action: "HYGL_UPDATEISOFF", P1: el.ID, P2: (el.IsOff == "1" ? "0" : "1") },
                 function (result) {
                     if ($.trim(result.ErrorMsg) == "") {
-                        top.ComFunJS.winsuccess(el.IsOff == "1" ? "关闭成功" : "启用成功");
+                        top.ComFunJS.winsuccess(el.IsOff == "1" ? "启用成功" : "关闭成功");
                         tempindex.GetLIST();
                     }
                 });
