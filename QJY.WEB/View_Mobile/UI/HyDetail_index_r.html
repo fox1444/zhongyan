@@ -17,22 +17,35 @@
     </div>
     <div class="hy_wrap" id="hy_wrap">
         <!--<div class="invitation">
-            INVITATION
-        </div>-->
+        INVITATION
+    </div>-->
         <div class="logo">
         </div>
         <div class="title">
-            {{modelData.Title|html}}
+            <!--{{modelData.Title|html}}-->
+            <img src="/View_Mobile/Images/title-text.jpg" style="width:70%;" />
         </div>
-        <div class="infomation" style="display:none;">
+        <!--<div class="infomation" style="display:none;">
             时间：{{modelData.TitleTime}}
         </div>
         <div class="infomation" style="display:none;">
             地址：{{modelData.Name}}
+        </div>-->
+        <div class="infomation" style="display:none;">
+            报到时间：{{modelData.TitleTime}}
+        </div>
+        <div class="infomation" style="display:none;">
+            报到地点：世纪城假日酒店
+        </div>
+        <div class="infomation" style="display:none;">
+            会议时间：11月8日9:30-11:40
+        </div>
+        <div class="infomation" style="display:none;">
+            会议地点：{{modelData.Name}}
         </div>
         <div class="default_block" style="display:none;">
             <div class="infomation">
-                尊敬的<span style="color:red">{{currentuser.Name}}</span>，欢迎您参加本次会议
+                尊敬的<span style="color:#fff">{{currentuser.Name}}</span>，欢迎您参加本次会议
             </div>
             <div class="infomation" ms-if="currentuser.ServiceUserName!=''">
                 您的专属联络员是<span class="mobphone">{{ComFunJS.SetContactPhone(currentuser.ServiceUserMobphone,currentuser.ServiceUserName)|html}}</span>，

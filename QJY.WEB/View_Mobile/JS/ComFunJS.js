@@ -144,7 +144,7 @@ var urlData = [];
 })(window.jQuery || window.Zepto, window);
 
 var ComFunJS = {
-    yuming: "http://www.lstobacco.com",
+    yuming: "http://hw.sctobacco.com:9000",
     seelp: function (numberMillis) {
         var now = new Date();
         var exitTime = now.getTime() + numberMillis;
