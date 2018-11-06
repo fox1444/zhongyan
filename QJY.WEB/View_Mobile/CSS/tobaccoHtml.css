@@ -88,13 +88,13 @@ a {
 }
 
 .logo::before {
-    content: "";
+    /*content: "";
     width: 100%;
     min-height: 60px;
     display: block;
     background: url(/View_Mobile/Images/tobacco-logo1.png) 10px center no-repeat;
     background-size: 30%;
-    margin: 0 0 0 0;
+    margin: 0 0 0 0;*/
 }
 
 /*.hy_wrap_r .logo::after {
@@ -110,7 +110,7 @@ a {
     font-weight: bold;
     font-size: 140%;
     margin: 0px auto;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
     line-height: 160%;
 }
 
@@ -126,7 +126,7 @@ a {
     font-size: 110%;
     text-align: left;
     width: 85%;
-    margin: 12px auto;
+    margin: 7px auto;
 }
 
 .ewrcode {
@@ -142,7 +142,7 @@ a {
 
 .gobutton {
     margin: 0 auto;
-    margin-top: 35px;
+    margin-top: 22px;
 }
 
     .gobutton .fl-left {
@@ -295,7 +295,8 @@ a {
 .hy_step_r .wrapper .banner {
     /*background: url(/View_Mobile/Images/logo-bg.jpg) center top no-repeat;*/
     background: #D6000F;
-    margin-bottom:0px;
+    padding: 20px 10px 13px 10px;
+    margin-bottom: 0px;
 }
 
 .wrapper .content-bg {
@@ -394,7 +395,7 @@ a {
     text-decoration: none;
     display: block;
     margin: 5px;
-    padding: 12px 0 8px 0;
+    padding: 14px 0 10px 0;
     text-align: center;
     border-radius: 7px;
     background: #fff;
@@ -849,17 +850,40 @@ a {
         background-size: 100%;
     }
 
-.room-width-index .first {
-    background: none;
-    border: none;
-    width: 12px;
-    position: absolute;
-    left: 12px;
-    text-align: center;
-    font-size: 90%;
-    line-height: 22px;
-    vertical-align: top;
+.zoom-width-index {
+    height: 25px;
 }
+    .zoom-width-index li {
+        display: inline-block;
+        padding: 0px 0px;
+        margin-right: 4px;
+        line-height: 23px;
+        width: 20px;
+        height: 22px;
+        font-size: 14px;
+        text-align: center;
+    }
+    .zoom-width-index .B-zoom {
+        width:192px;
+    }
+    .zoom-width-index .A-zoom {
+        width:324px;
+    }
+    .zoom-width-index .C-zoom {
+        width: 192px;
+    }
+
+    .room-width-index .first {
+        background: none;
+        border: none;
+        width: 12px;
+        position: absolute;
+        left: 12px;
+        text-align: center;
+        font-size: 90%;
+        line-height: 22px;
+        vertical-align: top;
+    }
 
 .last-row li {
     border: none;
