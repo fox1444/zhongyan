@@ -751,12 +751,16 @@ a {
         color: #000;
     }
 
+.list_parent_node .list_child_node .child_title {
+    float: left;
+    width: 38%;
+}
 .list_parent_node .list_child_node .child_ext {
     margin: 0 0 5px 0;
     color: #000;
     float: right;
     display: block;
-    width: 70%;
+    width: 60%;
     text-align: right;
 }
 
