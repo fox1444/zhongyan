@@ -88,13 +88,13 @@ a {
 }
 
 .logo::before {
-    /*content: "";
+    content: "";
     width: 100%;
     min-height: 60px;
     display: block;
     background: url(/View_Mobile/Images/tobacco-logo1.png) 10px center no-repeat;
     background-size: 30%;
-    margin: 0 0 0 0;*/
+    margin: 0 0 0 0;
 }
 
 /*.hy_wrap_r .logo::after {
@@ -106,7 +106,6 @@ a {
     background-size: 40%;
     margin: -58px 0px 0 0;
 }*/
-
 .title {
     font-weight: bold;
     font-size: 140%;
@@ -288,7 +287,7 @@ a {
         font-size: 110%;
         text-align: center;
         padding: 13px 10px 6px 10px;
-        margin-bottom: 0px;
+        margin-bottom: 20px;
         background: #019FE8;
         color: #fff;
     }
@@ -296,6 +295,7 @@ a {
 .hy_step_r .wrapper .banner {
     /*background: url(/View_Mobile/Images/logo-bg.jpg) center top no-repeat;*/
     background: #D6000F;
+    margin-bottom:0px;
 }
 
 .wrapper .content-bg {
@@ -326,7 +326,7 @@ a {
 
 .wrapper .menu_index {
     background: url(/View_Mobile/Images/foot.jpg) bottom center no-repeat #D6000F;
-    background-size:100% auto;
+    background-size: 100% auto;
 }
 
 .wrapper .bg-holder {
@@ -380,35 +380,45 @@ a {
 
     .wrapper .hy_menu_list a {
         float: left;
-        width: 30%;
+        width: 33%;
         text-decoration: none;
         display: block;
-        margin: 5px;
-        padding:12px 0 8px 0;
-        background:#fff;
+        margin: 10px 0;
+        padding: 8px 0 8px 0;
         text-align: center;
-        border-radius:7px;
     }
 
-    .wrapper .hy_menu_list i {
-        border: solid 1px #111;
-        border-radius: 14px;
-        line-height: 14px;
-        padding: 0 5px;
-        font-size: 80%;
-        font-style: normal;
-        margin-right: 16px;
-    }
+.hy_step_r .wrapper .hy_menu_list a {
+    float: left;
+    width: 30%;
+    text-decoration: none;
+    display: block;
+    margin: 5px;
+    padding: 12px 0 8px 0;
+    text-align: center;
+    border-radius: 7px;
+    background: #fff;
+}
 
-    .wrapper .hy_menu_list img {
-        border-radius: 50px;
-        width: 40%;
-    }
+.wrapper .hy_menu_list i {
+    border: solid 1px #111;
+    border-radius: 14px;
+    line-height: 14px;
+    padding: 0 5px;
+    font-size: 80%;
+    font-style: normal;
+    margin-right: 16px;
+}
 
-    .wrapper .hy_menu_list span {
-        display: block;
-        color: #000;
-    }
+.wrapper .hy_menu_list img {
+    border-radius: 50px;
+    width: 40%;
+}
+
+.wrapper .hy_menu_list span {
+    display: block;
+    color: #000;
+}
 
 .bg-white .title {
     margin-top: 0px;
